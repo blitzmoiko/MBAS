@@ -1,0 +1,28 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation=
+	"http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
+
+	<!-- Database Configuration -->
+	<import resource="config/spring/DataSource.xml" />
+	<import resource="config/spring/HibernateSessionFactory.xml" />
+
+	<!-- Beans Declaration -->
+	<import resource="com/cityproperties/domain/spring/BusinessAssociateBean.xml" />
+	<import resource="com/cityproperties/domain/spring/ClientBean.xml" />
+	<import resource="com/cityproperties/domain/spring/ClientPrivilegeBean.xml" />
+	<import resource="com/cityproperties/domain/spring/LetterContentBean.xml" />
+	<import resource="com/cityproperties/domain/spring/LetterTemplateBean.xml" />
+	<import resource="com/cityproperties/domain/spring/MailRecordBean.xml" />
+	<import resource="com/cityproperties/domain/spring/MailTypeBean.xml" />
+	<import resource="com/cityproperties/domain/spring/LoginBean.xml" />
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+</beans>
