@@ -17,7 +17,6 @@ import org.hibernate.annotations.Type;
 @Entity
 @Table(name = "C_CLIENT_PRIVILEGE")
 public class ClientPrivilege implements Serializable {
-	// TODO Generate Java Doc
 
 	@Id
 	@Column(name = "CLIENT_ID", unique = true, nullable = false)

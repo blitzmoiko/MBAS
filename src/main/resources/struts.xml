@@ -4,74 +4,100 @@
     "http://struts.apache.org/dtds/struts-2.0.dtd">
 
 <struts>
-	<constant name="struts.enable.DynamicMethodInvocation" value="false" />
-	<constant name="struts.devMode" value="false" />
-	<constant name="struts.custom.i18n.resources" value="system" />
-
 	<package name="default" namespace="/Application" extends="struts-default">
-	 	
-	 	<action name="main">
-			<result>content/main.jsp</result>
-		</action>
-	 	
-		<action name="login" class="com.cityproperties.web.LoginAction">
-			<result name="input">content/login.jsp</result>
-			<result name="success">main</result>
-		</action>
-		
-		<action name="to_changePassword" class="com.cityproperties.web.DefaultAction">
-			<result name="success">changePassword</result>
-		</action>
-		
-		<action name="changePassword" class="com.cityproperties.web.ChangePasswordAction">
-			<result name="input">content/change_password.jsp</result>		
-			<result name="success">main</result>
-		</action>
-		
-<!-- 
-		<action name="*Client" method="{1}" class="com.cityproperties.web.ClientAction">
-			<result name="success">content/main.jsp</result>
-		</action>
-		
-		<action name="*BA" method="{1}" class="com.cityproperties.web.BusinessAssociateAction">
-			<result name="success">content/main.jsp</result>
-		</action>
- -->
-		
-		
-		<!-- Client -->
-		<action name="saveOrUpdateClient" method="saveOrUpdate" class="com.cityproperties.web.ClientAction">
-			<result name="success" type="redirect">content/main.jsp</result>
-		</action>
-		
-		<action name="listClient" method="list" class="com.cityproperties.web.ClientAction">
-			<result name="success">content/add_client.jsp</result>
-		</action>
-		
-		<action name="editClient" method="edit" class="com.cityproperties.web.ClientAction">
-			<result name="success">/register.jsp</result>
-		</action>
-		
-		<action name="deleteClient" method="delete" class="com.cityproperties.web.ClientAction">
-			<result name="success" type="redirect">listClient</result>
-		</action>
-		
-		<!-- Business Associate -->
-		<action name="saveOrUpdateBA" method="saveOrUpdate" class="com.cityproperties.web.BusinessAssociateAction">
-			<result name="success" type="redirect">content/main.jsp</result>
-		</action>
-		
-		<action name="listBA" method="list" class="com.cityproperties.web.BusinessAssociateAction">
-			<result name="success">content/add_ba.jsp</result>
-		</action>
-		
-		<action name="editBA" method="edit" class="com.cityproperties.web.BusinessAssociateAction">
-			<result name="success">/register.jsp</result>
-		</action>
-		
-		<action name="deleteBA" method="delete" class="com.cityproperties.web.BusinessAssociateAction">
-			<result name="success" type="redirect">listBA</result>
-		</action>
+	
+	<!-- Interceptor  -->
+<!-- 	<interceptors>
+		<interceptor-stack name="myStack">
+			<interceptor-ref name="params" />
+			<interceptor-ref name="paramsPrepareParamsStack">
+				<param name="validation.excludeMethods"> 
+					list,delete
+				</param>
+				<param name="exception.logEnabled">true</param>
+				<param name="exception.logLevel">ERROR</param>
+			</interceptor-ref>
+		</interceptor-stack>
+	</interceptors> -->
+	 
+	<!-- Main -->
+	<action name="main">
+		<result>content/main.jsp</result>
+	</action>
+	
+	
+	<!-- Login -->
+	<action name="login" class="com.cityproperties.web.LoginAction">
+		<result name="input">content/login.jsp</result>
+		<result type="redirect">main</result>
+	</action>
+
+
+	<!-- Change Password -->
+	<action name="changePassword" class="com.cityproperties.web.ChangePasswordAction">
+		<result name="input">content/change_password.jsp</result>
+		<result type="redirect">main</result>
+	</action>
+
+
+	<!-- Client -->
+	<action name="listClient" method="list"
+		class="com.cityproperties.web.ClientAction">
+		<result>content/add_client.jsp</result>
+	</action>
+	
+	<action name="validateClient" 
+			class="com.cityproperties.web.ClientValidateAction">
+		<result name="input">content/add_client.jsp</result>
+		<result>
+			<param name="actionName">saveOrUpdateClient</param>
+		</result>
+	</action>
+
+	<action name="saveOrUpdateClient" method="saveOrUpdate"
+		class="com.cityproperties.web.ClientAction">
+		<result>content/main.jsp</result>
+	</action>
+
+	<action name="editClient" method="edit"
+		class="com.cityproperties.web.ClientAction">
+		<result>/register.jsp</result>
+	</action>
+
+	<action name="deleteClient" method="delete"
+		class="com.cityproperties.web.ClientAction">
+		<result type="redirect">listClient</result>
+	</action>
+
+
+	<!-- Business Associate -->
+	<action name="listBA" method="list"
+		class="com.cityproperties.web.BusinessAssociateAction">
+		<result>content/add_ba.jsp</result>
+	</action>
+
+	<action name="validateBA" 
+			class="com.cityproperties.web.BusinessAssociateValidateAction">
+		<result name="input">content/add_ba.jsp</result>
+		<result>
+			<param name="actionName">saveOrUpdateBA</param>
+		</result>
+	</action>
+	
+	<action name="saveOrUpdateBA" method="saveOrUpdate"
+		class="com.cityproperties.web.BusinessAssociateAction">
+		<result>content/main.jsp</result>
+	</action>
+
+	<action name="editBA" method="edit"
+		class="com.cityproperties.web.BusinessAssociateAction">
+		<result>/register.jsp</result>
+	</action>
+
+	<action name="deleteBA" method="delete"
+		class="com.cityproperties.web.BusinessAssociateAction">
+		<result type="redirect">listBA</result>
+	</action>
 		
 	</package>
 

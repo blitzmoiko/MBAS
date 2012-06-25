@@ -20,7 +20,7 @@ public class LetterTemplate implements Serializable {
 	//TODO Generate Java Doc
 	
 	@Id
-	@SequenceGenerator(name = "ltSeq", sequenceName="LETTER_TEMPLATE_SEQUENCE")
+	@SequenceGenerator(name = "ltSeq", sequenceName="LETTER_TEMPLATE_SEQUENCE", allocationSize = 1, initialValue= 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ltSeq")
 	@Column(name = "L_CONTENT_ID")
 	private Long letterTemplateId;

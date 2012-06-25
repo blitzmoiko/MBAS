@@ -12,26 +12,22 @@ import org.apache.struts2.interceptor.SessionAware;
 import com.cityproperties.dao.ClientDAO;
 import com.cityproperties.domain.Client;
 import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.ModelDriven;
 
-public class ClientAction extends ActionSupport implements ModelDriven<Client>, SessionAware {
+public class ClientAction extends ActionSupport implements SessionAware {
 	// Constants
-	private final String CLIENT = "client";
+	private static final String CLIENT = "client";
 	
 	// Session
 	private Map<String, Object> session;
-	private Client client =  new Client();
+	private Client client;
 	private List<Client> clients = new ArrayList<Client>();
 
 	//DI via Spring
 	private ClientDAO clientDao;
 	
-	public Client getModel() {
-		return client;
-	}
-	
 	public String execute() {
 		session.put(CLIENT, client);
+		session.put("clients", clients);
 		return SUCCESS;
 	}
 
@@ -39,7 +35,7 @@ public class ClientAction extends ActionSupport implements ModelDriven<Client>, 
 	 * To save or update user.
 	 * @return String
 	 */
-	public String saveOrUpdate() {
+	public String saveOrUpdate() {	
 		clientDao.save(client);
 		return SUCCESS;
 	}
@@ -59,8 +55,7 @@ public class ClientAction extends ActionSupport implements ModelDriven<Client>, 
 	 */
 	public String delete() {
 		HttpServletRequest request = ServletActionContext.getRequest();
-		client = clientDao.find(Long.parseLong(request.getParameter("id")));
-		clientDao.remove(client);
+		clientDao.removeById(Long.parseLong(request.getParameter("id")));
 		return SUCCESS;
 	}
 	
@@ -71,7 +66,6 @@ public class ClientAction extends ActionSupport implements ModelDriven<Client>, 
 	public String edit() {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		client = clientDao.find(Long.parseLong(request.getParameter("id")));
-		clientDao.remove(client);
 		return SUCCESS;
 	}
 	

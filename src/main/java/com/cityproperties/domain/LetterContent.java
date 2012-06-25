@@ -19,7 +19,7 @@ public class LetterContent implements Serializable {
 	//TODO Generate Java Doc
 	
 	@Id
-	@SequenceGenerator(name = "lcSeq", sequenceName="LETTER_CONTENT_SEQUENCE")
+	@SequenceGenerator(name = "lcSeq", sequenceName="LETTER_CONTENT_SEQUENCE", allocationSize = 1, initialValue= 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "lcSeq")
 	@Column(name = "L_CONTENT_ID")
 	private Long letterContentId;

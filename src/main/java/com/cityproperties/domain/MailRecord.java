@@ -23,7 +23,7 @@ public class MailRecord implements Serializable {
 	//TODO Generate Java Doc
 	
 	@Id
-	@SequenceGenerator(name = "mrSeq", sequenceName=" MAIL_RECORD_SEQUENCE")
+	@SequenceGenerator(name = "mrSeq", sequenceName=" MAIL_RECORD_SEQUENCE", allocationSize = 1, initialValue= 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mrSeq")
 	@Column(name = "M_RECORD_ID")
 	private Integer mailRecordId;

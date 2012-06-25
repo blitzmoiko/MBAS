@@ -10,28 +10,27 @@
 </head>
 <body>
 	<h2>Create User Form</h2>
-	<s:form action="saveOrUpdateClient">
-		<s:push value="client">
-			<s:hidden name="clientId" />
-			<s:textfield name="firstName" key="label.first_name" />
-			<s:textfield name="lastName" key="label.last_name" />
-			<s:textfield name="username" key="label.username" />
-			<s:password name="password" key="label.password" />
-			<s:checkbox label="Activate" name="active" value="false" />
-			<s:checkboxlist list="{'View', 'Insert', 'Update', 'Delete'}" name="privileges" />
-			<s:submit action="" key="label.copy_privileges" />
-			<s:submit key="label.submit" name="submit" />
-			<s:submit action="main" key="label.close" name="close" onclick="form.onsubmit=null"/>
-			
-			<!-- TODO 
-			<s:if test="client.zuper == true">
-				<p><s:property value="client.zuper" /></p>
-				<p><s:property value="%{client.zuper}" /></p>
-			</s:if>
-			-->
-		</s:push>
+	<s:actionerror />
+	<s:form action="validateClient">
+		<s:hidden name="clientId" />
+		<s:textfield name="firstName" key="label.first_name" required="true" />
+		<s:textfield name="lastName" key="label.last_name" required="true" />
+		<s:textfield name="username" key="label.username" required="true" />
+		<s:password name="password" key="label.password" required="true" />
+		<s:checkbox name="active" key="label.active" value="false" />
+		<s:checkbox name="view" key="label.view" value="false" />
+		<s:checkbox name="insert" key="label.insert" value="false" />
+		<s:checkbox name="update" key="label.update" value="false" />
+		<s:checkbox name="delete" key="label.delete" value="false" />
+		<s:submit action="" key="label.copy_privileges" />
+		<s:submit key="label.submit" name="submit" />
+		<s:submit action="main" key="label.close" name="close" onclick="form.onsubmit=null"/>
 	</s:form>
 	
+	<s:if test="clients.isEmpty()">
+		<s:set name="clients" value="#session.clients" />
+	</s:if>
+
 	<sx:tabbedpanel id="tabContainer">
 		<sx:div label="Client List">
 			<s:if test="clients.size() > 0">

@@ -23,7 +23,7 @@ public class MailType implements java.io.Serializable {
 	//TODO Generate Java Doc
 	
 	@Id
-	@SequenceGenerator(name = "mtSeq", sequenceName="MAIL_TYPE_SEQUENCE")
+	@SequenceGenerator(name = "mtSeq", sequenceName="MAIL_TYPE_SEQUENCE", allocationSize = 1, initialValue= 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mtSeq")
 	@Column(name = "M_TYPE_ID")
 	private Long mailTypeId;

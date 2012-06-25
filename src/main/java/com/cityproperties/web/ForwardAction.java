@@ -8,7 +8,7 @@ import com.cityproperties.dao.ClientDAO;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.config.ConfigurationManager;
 
-public class DefaultAction extends ActionSupport implements SessionAware {
+public class ForwardAction extends ActionSupport implements SessionAware {
 	// Session
 	private Map<String, Object> session;
 

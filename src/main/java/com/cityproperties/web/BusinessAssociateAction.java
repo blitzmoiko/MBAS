@@ -7,15 +7,15 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.interceptor.SessionAware;
 
 import com.cityproperties.dao.BusinessAssociateDAO;
 import com.cityproperties.domain.BusinessAssociate;
 import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.ModelDriven;
 
-public class BusinessAssociateAction extends ActionSupport implements ModelDriven<BusinessAssociate> {
+public class BusinessAssociateAction extends ActionSupport implements SessionAware {
 	// Constants
-	private final String BA = "businessAssociate";
+	private static final String BA = "businessAssociate";
 
 	// Session
 	private Map<String, Object> session;
@@ -24,10 +24,6 @@ public class BusinessAssociateAction extends ActionSupport implements ModelDrive
 
 	// DI via Spring
 	private BusinessAssociateDAO businessAssociateDao;
-
-	public BusinessAssociate getModel() {
-		return businessAssociate;
-	}
 
 	public String execute() {
 		session.put(BA, businessAssociate);
@@ -61,8 +57,7 @@ public class BusinessAssociateAction extends ActionSupport implements ModelDrive
 	 */
 	public String delete() {
 		HttpServletRequest request = ServletActionContext.getRequest();
-		businessAssociate = businessAssociateDao.find(Long.parseLong(request.getParameter("id")));
-		businessAssociateDao.remove(businessAssociate);
+		businessAssociateDao.removeById(Long.parseLong(request.getParameter("id")));
 		return SUCCESS;
 	}
 
@@ -75,6 +70,10 @@ public class BusinessAssociateAction extends ActionSupport implements ModelDrive
 		HttpServletRequest request = ServletActionContext.getRequest();
 		businessAssociate = businessAssociateDao.find(Long.parseLong(request.getParameter("id")));
 		return SUCCESS;
+	}
+
+	public BusinessAssociate getBusinessAssociate() {
+		return businessAssociate;
 	}
 
 	public void setBusinessAssociate(BusinessAssociate businessAssociate) {
@@ -91,6 +90,10 @@ public class BusinessAssociateAction extends ActionSupport implements ModelDrive
 
 	public void setBusinessAssociateDao(BusinessAssociateDAO businessAssociateDao) {
 		this.businessAssociateDao = businessAssociateDao;
+	}
+	
+	public void setSession(Map<String, Object> session) {
+		this.session = session;
 	}
 
 }

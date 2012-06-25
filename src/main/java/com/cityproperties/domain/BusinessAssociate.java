@@ -25,7 +25,7 @@ public class BusinessAssociate implements java.io.Serializable {
 	//TODO Generate Java Doc
 	
 	@Id
-	@SequenceGenerator(name = "baSeq", sequenceName="BA_SEQUENCE")
+	@SequenceGenerator(name = "baSeq", sequenceName="BA_SEQUENCE", allocationSize = 1, initialValue= 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "baSeq")
 	@Column(name = "BA_ID")
 	private Long businessAssociateId;

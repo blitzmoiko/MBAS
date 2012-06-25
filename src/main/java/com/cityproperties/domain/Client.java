@@ -17,14 +17,14 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 
+import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
+
 @Entity
 @Table(name = "C_CLIENT")
 public class Client implements Serializable {
-	// TODO Generate Java Doc
-	// TODO Available to Super Admin only, be added next time
 
 	@Id
-	@SequenceGenerator(name = "clientSeq", sequenceName="CLIENT_SEQUENCE")
+	@SequenceGenerator(name = "clientSeq", sequenceName="CLIENT_SEQUENCE", allocationSize = 1, initialValue= 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "clientSeq")
 	@Column(name = "CLIENT_ID")
 	private Long clientId;
@@ -56,8 +56,6 @@ public class Client implements Serializable {
 	@OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
 	private ClientPrivilege clientPrivilege = new ClientPrivilege(this, false,
 			false, false, false);
-
-//	private List<Boolean> privileges = new ArrayList<Boolean>();
 
 	public Client() {/* Default constructor for hibernate */}
 
@@ -95,6 +93,7 @@ public class Client implements Serializable {
 		this.clientId = clientId;
 	}
 
+	@RequiredStringValidator(message="First name is required.")
 	public String getFirstName() {
 		return firstName;
 	}
@@ -103,6 +102,7 @@ public class Client implements Serializable {
 		this.firstName = firstName;
 	}
 
+	@RequiredStringValidator(message="Last name is required.")
 	public String getLastName() {
 		return lastName;
 	}
@@ -151,26 +151,11 @@ public class Client implements Serializable {
 		this.businessAssociates = businessAssociates;
 	}
 
-//	public List<Boolean> getPrivileges() {
-//		return privileges;
-//	}
-//
-//	public void setPrivileges(List<Boolean> privileges) {
-//		this.privileges = privileges;
-//	}
-
 	public ClientPrivilege getClientPrivilege() {
 		return this.clientPrivilege;
 	}
 
 	public void setClientPrivilege(ClientPrivilege clientPrivilege) {
-//		if (!privileges.isEmpty()) {
-//			clientPrivilege.setView(privileges.get(0));
-//			clientPrivilege.setInsert(privileges.get(1));
-//			clientPrivilege.setUpdate(privileges.get(2));
-//			clientPrivilege.setDelete(privileges.get(3));
-//		}
-
 		this.clientPrivilege = clientPrivilege;
 	}
 

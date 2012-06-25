@@ -13,7 +13,7 @@ import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
 
 public class ChangePasswordAction extends ActionSupport implements SessionAware {
 	// Constants
-	private final String CLIENT = "client";
+	private static final String CLIENT = "client";
 
 	// Fields
 	private String oldPassword;
@@ -32,49 +32,43 @@ public class ChangePasswordAction extends ActionSupport implements SessionAware 
 		/* TODO After validating the old password and the new password, it will
 		 be able to confirm that it had successfully changed the password on the result page*/
 		
-		if (session.containsKey(CLIENT)) {
-			
-			client = (Client) session.get(CLIENT);
-			
-			// Check if password exists before
-			if (!clientDao.findOldPasswordIfExists(client, oldPassword)) {
+		return SUCCESS;
 
-				addActionError(getText("error.nonExistingPassword"));
+	}
+	
+	public void validate() {
 
-				return INPUT;
+		if (!clientDao.findOldPasswordIfExists(client, oldPassword)) {
+
+			addFieldError("oldPassword", getText("error.nonExistingPassword"));
+
+		}
+
+		else {
+
+			if (oldPassword.equals(newPassword)) {
+
+				addFieldError("newPassword", getText("error.samePassword"));
+
+			}
+
+			else if (!newPassword.equals(reNewPassword)) {
+
+				addFieldError("reNewPassword", getText("error.unmatchedPassword"));
 
 			}
 
 			else {
 
-				if (oldPassword.equals(newPassword)) {
+				String encrypted = EncryptPassword.encrypt(newPassword);
+				client.setPassword(encrypted);
+				clientDao.save(client);
 
-					addActionError(getText("error.samePassword"));
-
-					return INPUT;
-
-				} else if (!newPassword.equals(reNewPassword)) {
-
-					addActionError(getText("error.unmatchedPassword"));
-
-					return INPUT;
-
-				} else {
-
-					String encrypted = EncryptPassword.encrypt(newPassword);
-					client.setPassword(encrypted);
-					clientDao.save(client);
-
-					session.put(CLIENT, client);
-
-					return SUCCESS;
-
-				}
+				session.put(CLIENT, client);
 
 			}
+
 		}
-		
-		return ERROR;
 
 	}
 

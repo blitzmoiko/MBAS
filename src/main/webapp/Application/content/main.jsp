@@ -20,7 +20,7 @@
 		</li>
 		<li>
 			<!-- Configuration  -->
-			<a href='<s:url action="to_changePassword" /> '>Change Password</a>
+			<a href="content/change_password.jsp">Change Password</a>
 		</li>
 		<li>
 			<!-- Mail System: send mail, manage letter content, manage letter template, manage mail type -->
