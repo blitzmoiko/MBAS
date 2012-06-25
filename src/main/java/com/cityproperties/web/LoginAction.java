@@ -25,23 +25,14 @@ public class LoginAction extends ActionSupport implements SessionAware {
 	private ClientDAO clientDao;
 
 	public String execute() {
-
 		client = clientDao.loadByUsernameAndPassword(username, password);
-
 		if (client == null) {
-
 			addActionError(getText("error.login"));
-			
 			return INPUT;
-
 		} else {
-
 			session.put(CLIENT, client);
-
 			return SUCCESS;
-
 		}
-
 	}
 
 	@RequiredStringValidator(message = "Username is required.")

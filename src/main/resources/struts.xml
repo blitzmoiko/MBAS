@@ -7,7 +7,7 @@
 	<package name="default" namespace="/Application" extends="struts-default">
 	
 	<!-- Interceptor  -->
-<!-- 	<interceptors>
+	<!-- <interceptors>
 		<interceptor-stack name="myStack">
 			<interceptor-ref name="params" />
 			<interceptor-ref name="paramsPrepareParamsStack">
@@ -21,7 +21,7 @@
 	</interceptors> -->
 	 
 	<!-- Main -->
-	<action name="main">
+	<action name="main" class="com.cityproperties.web.ForwardAction">
 		<result>content/main.jsp</result>
 	</action>
 	
@@ -43,12 +43,12 @@
 	<!-- Client -->
 	<action name="listClient" method="list"
 		class="com.cityproperties.web.ClientAction">
-		<result>content/add_client.jsp</result>
+		<result>content/manage_client.jsp</result>
 	</action>
 	
 	<action name="validateClient" 
 			class="com.cityproperties.web.ClientValidateAction">
-		<result name="input">content/add_client.jsp</result>
+		<result name="input">content/manage_client.jsp</result>
 		<result>
 			<param name="actionName">saveOrUpdateClient</param>
 		</result>
@@ -73,12 +73,12 @@
 	<!-- Business Associate -->
 	<action name="listBA" method="list"
 		class="com.cityproperties.web.BusinessAssociateAction">
-		<result>content/add_ba.jsp</result>
+		<result>content/manage_ba.jsp</result>
 	</action>
 
 	<action name="validateBA" 
 			class="com.cityproperties.web.BusinessAssociateValidateAction">
-		<result name="input">content/add_ba.jsp</result>
+		<result name="input">content/manage_ba.jsp</result>
 		<result>
 			<param name="actionName">saveOrUpdateBA</param>
 		</result>
