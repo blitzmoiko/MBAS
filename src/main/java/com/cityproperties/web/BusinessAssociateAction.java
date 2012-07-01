@@ -1,6 +1,5 @@
 package com.cityproperties.web;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -11,28 +10,41 @@ import org.apache.struts2.interceptor.SessionAware;
 
 import com.cityproperties.dao.BusinessAssociateDAO;
 import com.cityproperties.domain.BusinessAssociate;
+import com.cityproperties.util.Constants;
 import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Preparable;
 
-public class BusinessAssociateAction extends ActionSupport implements SessionAware {
-	// Constants
-	private static final String BA = "businessAssociate";
+public class BusinessAssociateAction extends ActionSupport implements SessionAware, Preparable {
 
 	// Session
 	private Map<String, Object> session;
-	private BusinessAssociate businessAssociate = new BusinessAssociate();
-	private List<BusinessAssociate> businessAssociates = new ArrayList<BusinessAssociate>();
+	private BusinessAssociate businessAssociate;
+	private List<BusinessAssociate> businessAssociates;
 
 	// DI via Spring
 	private BusinessAssociateDAO businessAssociateDao;
 
+	@SuppressWarnings("unchecked")
+	public void prepare() throws Exception {
+		if (session.containsKey(Constants.MODEL_BA)) {
+			businessAssociate = (BusinessAssociate) session.get(Constants.MODEL_BA);		
+		}
+		
+		if (session.containsKey(Constants.BAS)) {
+			businessAssociates = (List<BusinessAssociate>) session.get(Constants.BAS);		
+		}
+		else {
+			businessAssociates = businessAssociateDao.findAll();
+			session.put(Constants.BAS, businessAssociates);
+		}
+	}
+
 	public String execute() {
-		session.put(BA, businessAssociate);
 		return SUCCESS;
 	}
 
 	/**
 	 * To save or update user.
-	 * 
 	 * @return String
 	 */
 	public String saveOrUpdate() {
@@ -42,17 +54,16 @@ public class BusinessAssociateAction extends ActionSupport implements SessionAwa
 
 	/**
 	 * To list all users.
-	 * 
 	 * @return String
 	 */
 	public String list() {
 		businessAssociates = businessAssociateDao.findAll();
+		session.put(Constants.BAS, businessAssociates);
 		return SUCCESS;
 	}
 
 	/**
 	 * To delete a user.
-	 * 
 	 * @return String
 	 */
 	public String delete() {
@@ -63,7 +74,6 @@ public class BusinessAssociateAction extends ActionSupport implements SessionAwa
 
 	/**
 	 * To list a single user by Id.
-	 * 
 	 * @return String
 	 */
 	public String edit() {

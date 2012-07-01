@@ -1,6 +1,5 @@
 package com.cityproperties.web;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -11,23 +10,32 @@ import org.apache.struts2.interceptor.SessionAware;
 
 import com.cityproperties.dao.ClientDAO;
 import com.cityproperties.domain.Client;
+import com.cityproperties.util.Constants;
 import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Preparable;
 
-public class ClientAction extends ActionSupport implements SessionAware {
-	// Constants
-	private static final String CLIENT = "client";
-	
+public class ClientAction extends ActionSupport implements SessionAware, Preparable {
+
 	// Session
 	private Map<String, Object> session;
 	private Client client;
-	private List<Client> clients = new ArrayList<Client>();
+	private List<Client> clients;
 
 	//DI via Spring
 	private ClientDAO clientDao;
 	
+	@SuppressWarnings("unchecked")
+	public void prepare() throws Exception {
+		if (session.containsKey(Constants.MODEL_CLIENT)) {
+			client = (Client) session.get(Constants.MODEL_CLIENT);
+		}
+		
+		if (session.containsKey(Constants.CLIENTS)) {
+			clients = (List<Client>) session.get(Constants.CLIENTS);		
+		}
+	}
+
 	public String execute() {
-		session.put(CLIENT, client);
-		session.put("clients", clients);
 		return SUCCESS;
 	}
 
@@ -35,8 +43,9 @@ public class ClientAction extends ActionSupport implements SessionAware {
 	 * To save or update user.
 	 * @return String
 	 */
-	public String saveOrUpdate() {	
+	public String saveOrUpdate() {
 		clientDao.save(client);
+		session.remove(Constants.MODEL_CLIENT);
 		return SUCCESS;
 	}
 
@@ -46,6 +55,7 @@ public class ClientAction extends ActionSupport implements SessionAware {
 	 */
 	public String list() {
 		clients = clientDao.findAll();
+		session.put(Constants.CLIENTS, clients);
 		return SUCCESS;
 	}
 
@@ -56,6 +66,7 @@ public class ClientAction extends ActionSupport implements SessionAware {
 	public String delete() {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		clientDao.removeById(Long.parseLong(request.getParameter("id")));
+		session.put(Constants.MODEL_CLIENT, client);
 		return SUCCESS;
 	}
 	
@@ -66,8 +77,20 @@ public class ClientAction extends ActionSupport implements SessionAware {
 	public String edit() {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		client = clientDao.find(Long.parseLong(request.getParameter("id")));
+		session.put(Constants.MODEL_CLIENT, client);
 		return SUCCESS;
 	}
+	
+    /** 
+     * Gets the action name. This is just the bare name without ".action" extension. 
+     * This is equivalent to "#context['struts.actionMapping'].name" from in a JSP. 
+     * 
+     * @return the action name 
+     */ 
+ /*   public String getActionName() 
+    { 
+        return ActionContext.getContext().getName(); 
+    } */ // FIXME
 	
 	public Client getClient() {
 		return client;
@@ -88,7 +111,7 @@ public class ClientAction extends ActionSupport implements SessionAware {
 	public void setClientDao(ClientDAO clientDao) {
 		this.clientDao = clientDao;
 	}
-
+	
 	public void setSession(Map<String, Object> session) {
 		this.session = session;
 	}

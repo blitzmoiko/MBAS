@@ -1,6 +1,5 @@
 package com.cityproperties.web;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,46 +8,55 @@ import org.apache.struts2.ServletActionContext;
 
 import com.cityproperties.dao.ClientPrivilegeDAO;
 import com.cityproperties.domain.ClientPrivilege;
-import com.opensymphony.xwork2.Action;
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.ModelDriven;
 
-public class ClientPrivilegeAction extends ActionSupport implements ModelDriven<ClientPrivilege> {
+public class ClientPrivilegeAction extends ActionSupport  {
 
-	private ClientPrivilege clientPrivilege = new ClientPrivilege();
-	private List<ClientPrivilege> clientPrivileges = new ArrayList<ClientPrivilege>();
+	// Session
+	private ClientPrivilege clientPrivilege;
+	private List<ClientPrivilege> clientPrivileges;
 	
+	// DI via Spring	
 	private ClientPrivilegeDAO clientPrivilegeDao;
-	//DI via Spring
-	public void setClientPrivilegeDao(ClientPrivilegeDAO clientPrivilegeDao) {
-		this.clientPrivilegeDao = clientPrivilegeDao;
+	
+	public String execute() {
+		return SUCCESS;
 	}
 
-	public ClientPrivilege getModel() {
-		return clientPrivilege;
-	}
-
+	/**
+	 * To save or update user.
+	 * @return String
+	 */
 	public String saveOrUpdate() {
 		clientPrivilegeDao.save(clientPrivilege);
-		return Action.SUCCESS;
+		return SUCCESS;
 	}
 	
+	/**
+	 * To list all users.
+	 * @return String
+	 */	
 	public String list() {
 		clientPrivileges = clientPrivilegeDao.findAll();
-		return Action.SUCCESS;
+		return SUCCESS;
 	}
 	
+	/**
+	 * To delete a user.
+	 * @return String
+	 */
 	public String delete() {
-		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
-		clientPrivilege = clientPrivilegeDao.find(Long.parseLong(request.getParameter("id")));
-		clientPrivilegeDao.remove(clientPrivilege);
-		return Action.SUCCESS;
+		HttpServletRequest request = ServletActionContext.getRequest();
+		clientPrivilegeDao.removeById(Long.parseLong(request.getParameter("id")));
+		return SUCCESS;
 	}
 	
-	public String edit()
-	{
-		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
+	/**
+	 * To list a single user by Id.
+	 * @return String
+	 */
+	public String edit()	{
+		HttpServletRequest request = ServletActionContext.getRequest();
 		clientPrivilege = clientPrivilegeDao.find(Long.parseLong(request.getParameter("id")));
 		return SUCCESS;
 	}
@@ -67,6 +75,10 @@ public class ClientPrivilegeAction extends ActionSupport implements ModelDriven<
 
 	public void setClientPrivileges(List<ClientPrivilege> clientPrivileges) {
 		this.clientPrivileges = clientPrivileges;
+	}
+
+	public void setClientPrivilegeDao(ClientPrivilegeDAO clientPrivilegeDao) {
+		this.clientPrivilegeDao = clientPrivilegeDao;
 	}
 	
 }

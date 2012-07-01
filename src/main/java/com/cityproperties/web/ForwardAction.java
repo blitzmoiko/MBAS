@@ -1,6 +1,5 @@
 package com.cityproperties.web;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -8,22 +7,22 @@ import org.apache.struts2.interceptor.SessionAware;
 
 import com.cityproperties.dao.ClientDAO;
 import com.cityproperties.domain.Client;
+import com.cityproperties.util.Constants;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class ForwardAction extends ActionSupport implements SessionAware {
-	// TODO Will this get the values of client and clients, debug please
-	
+
 	// Session
 	private Map<String, Object> session;
+	private Client client;
+	private List<Client> clients;
 	
-	// Fields
-	private Client client ;
-	private List<Client> clients = new ArrayList<Client>();
-
 	// DI via Spring
 	private ClientDAO clientDao;
 	
 	public String execute() {
+		session.remove(Constants.MODEL_CLIENT);
+		session.remove(Constants.CLIENTS);
 		return SUCCESS;
 	}
 	

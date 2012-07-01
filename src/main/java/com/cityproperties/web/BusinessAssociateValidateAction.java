@@ -1,22 +1,26 @@
 package com.cityproperties.web;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.struts2.interceptor.SessionAware;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import com.cityproperties.dao.BusinessAssociateDAO;
+import com.cityproperties.dao.ClientDAO;
 import com.cityproperties.domain.BusinessAssociate;
+import com.cityproperties.util.Constants;
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Preparable;
 import com.opensymphony.xwork2.validator.annotations.EmailValidator;
 import com.opensymphony.xwork2.validator.annotations.RegexFieldValidator;
+import com.opensymphony.xwork2.validator.annotations.RequiredFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 
-public class BusinessAssociateValidateAction extends ActionSupport implements SessionAware {
-	// Constants
-	private static final String BA = "businessAssociate";
-	
+public class BusinessAssociateValidateAction extends ActionSupport implements SessionAware, Preparable {
+
 	// Fields
 	private Long businessAssociateId;
 	private String firstName;
@@ -28,13 +32,79 @@ public class BusinessAssociateValidateAction extends ActionSupport implements Se
 	private String workPhone;
 	private String mobilePhone;
 	private Date birthDate;
-	private String regToUser;
+	private Date anniversaryDate;
+	private Long regToUserId;
 	private boolean supplier;
 	
 	// Session
 	private Map<String, Object> session;
-	private BusinessAssociate businessAssociate = new BusinessAssociate();
-	private List<BusinessAssociate> businessAssociates = new ArrayList<BusinessAssociate>();
+	private BusinessAssociate businessAssociate;
+	private List<BusinessAssociate> businessAssociates;
+	
+	// DI via Spring
+	private ClientDAO clientDao;
+	private BusinessAssociateDAO businessAssociateDao;
+	
+	@SuppressWarnings("unchecked")
+	public void prepare() throws Exception {
+		// TODO
+		ActionContext.getContext().getValueStack();
+		
+		if (session.containsKey(Constants.BAS)) {
+			businessAssociate = (BusinessAssociate) session.get(Constants.BA);
+			setBusinessAssociateId(businessAssociate.getBusinessAssociateId());
+			setFirstName(businessAssociate.getFirstName());
+			setMiddleName(businessAssociate.getMiddleName());
+			setLastName(businessAssociate.getLastName());
+			setEmail(businessAssociate.getEmail());
+			setGender(businessAssociate.getSex());
+			setHomePhone(businessAssociate.getHomePhone());
+			setWorkPhone(businessAssociate.getWorkPhone());
+			setMobilePhone(businessAssociate.getMobilePhone());
+			setBirthDate(businessAssociate.getBirthDate());
+			setAnniversaryDate(businessAssociate.getAnniversaryDate());
+			setRegToUserId(businessAssociate.getClient().getClientId());
+			setSupplier(businessAssociate.getSupplier());
+			
+		} 	
+		
+		if (session.containsKey(Constants.BAS)) {
+			businessAssociates = (List<BusinessAssociate>) session.get(Constants.BAS);		
+		}  
+	}
+	
+	public String execute() {
+		
+		if (businessAssociateId != null) {
+			businessAssociate = (BusinessAssociate) session.get(Constants.MODEL_BA);
+		} else {
+			businessAssociate = new BusinessAssociate();
+		}
+		
+		businessAssociate.setFirstName(firstName);
+		businessAssociate.setMiddleName(middleName);
+		businessAssociate.setLastName(lastName);
+		
+		// Set gender
+		if (gender.startsWith(Constants.MALE)) {
+			businessAssociate.setSex(Constants.MALE);
+		} else if (gender.startsWith(Constants.FEMALE)) {
+			businessAssociate.setSex(Constants.FEMALE);
+		}
+		
+		businessAssociate.setEmail(email);
+		businessAssociate.setHomePhone(homePhone);
+		businessAssociate.setWorkPhone(workPhone);
+		businessAssociate.setMobilePhone(mobilePhone);
+		businessAssociate.setBirthDate(birthDate);
+		businessAssociate.setAnniversaryDate(anniversaryDate);
+		businessAssociate.setSupplier(supplier);
+		businessAssociate.setClient(clientDao.find(regToUserId));
+		
+		session.put(Constants.MODEL_BA, businessAssociate);
+		
+		return SUCCESS;
+	}
 	
 	public Long getBusinessAssociateId() {
 		return businessAssociateId;
@@ -89,7 +159,7 @@ public class BusinessAssociateValidateAction extends ActionSupport implements Se
 		this.gender = gender;
 	}
 	
-	@RegexFieldValidator(expression = "![CDATA[\n{3}-\n{3}-\n{4}]]", message = "Home Phone number must be entered as 999-999-9999.")
+	@RegexFieldValidator(expression = "\\d{3}-\\d{3}-\\d{4}", message = "Home Phone number must be entered as 999-999-9999.")
 	public String getHomePhone() {
 		return homePhone;
 	}
@@ -98,7 +168,7 @@ public class BusinessAssociateValidateAction extends ActionSupport implements Se
 		this.homePhone = homePhone;
 	}
 	
-	@RegexFieldValidator(expression = "![CDATA[\n{3}-\n{3}-\n{4}]]", message = "Work Phone number must be entered as 999-999-9999.")
+	@RegexFieldValidator(expression = "\\d{3}-\\d{3}-\\d{4}", message = "Work Phone number must be entered as 999-999-9999.")
 	public String getWorkPhone() {
 		return workPhone;
 	}
@@ -107,7 +177,7 @@ public class BusinessAssociateValidateAction extends ActionSupport implements Se
 		this.workPhone = workPhone;
 	}
 	
-	@RegexFieldValidator(expression = "![CDATA[\n{3}-\n{3}-\n{4}]]", message = "Mobile Phone number must be entered as 999-999-9999.")
+	@RegexFieldValidator(expression = "\\d{3}-\\d{3}-\\d{4}", message = "Mobile Phone number must be entered as 999-999-9999.")
 	public String getMobilePhone() {
 		return mobilePhone;
 	}
@@ -116,7 +186,8 @@ public class BusinessAssociateValidateAction extends ActionSupport implements Se
 		this.mobilePhone = mobilePhone;
 	}
 	
-	@RequiredStringValidator(message="Birthdate is required.")
+	@RequiredFieldValidator(message="Birth date is required.")
+	@DateTimeFormat(pattern="dd-MM-yyyy")
 	public Date getBirthDate() {
 		return birthDate;
 	}
@@ -125,12 +196,21 @@ public class BusinessAssociateValidateAction extends ActionSupport implements Se
 		this.birthDate = birthDate;
 	}
 	
-	public String getRegToUser() {
-		return regToUser;
+	@DateTimeFormat(pattern="dd-MM-yyyy")
+	public Date getAnniversaryDate() {
+		return anniversaryDate;
+	}
+
+	public void setAnniversaryDate(Date anniversaryDate) {
+		this.anniversaryDate = anniversaryDate;
+	}
+
+	public Long getRegToUserId() {
+		return regToUserId;
 	}
 	
-	public void setRegToUser(String regToUser) {
-		this.regToUser = regToUser;
+	public void setRegToUserId(Long regToUserId) {
+		this.regToUserId = regToUserId;
 	}
 	
 	public boolean isSupplier() {
@@ -141,20 +221,20 @@ public class BusinessAssociateValidateAction extends ActionSupport implements Se
 		this.supplier = supplier;
 	}
 	
-	public BusinessAssociate getBusinessAssociate() {
-		return businessAssociate;
-	}
-	
-	public void setBusinessAssociate(BusinessAssociate businessAssociate) {
-		this.businessAssociate = businessAssociate;
-	}
-	
 	public List<BusinessAssociate> getBusinessAssociates() {
 		return businessAssociates;
 	}
 	
 	public void setBusinessAssociates(List<BusinessAssociate> businessAssociates) {
 		this.businessAssociates = businessAssociates;
+	}
+
+	public void setBusinessAssociateDao(BusinessAssociateDAO businessAssociateDao) {
+		this.businessAssociateDao = businessAssociateDao;
+	}
+	
+	public void setClientDao(ClientDAO clientDao) {
+		this.clientDao = clientDao;
 	}
 
 	public void setSession(Map<String, Object> session) {

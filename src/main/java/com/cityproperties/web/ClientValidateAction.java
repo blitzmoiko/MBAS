@@ -1,22 +1,22 @@
 package com.cityproperties.web;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.struts2.interceptor.SessionAware;
 
+import com.cityproperties.dao.ClientDAO;
 import com.cityproperties.domain.Client;
 import com.cityproperties.domain.ClientPrivilege;
+import com.cityproperties.util.Constants;
 import com.cityproperties.util.EncryptPassword;
 import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Preparable;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
 
-public class ClientValidateAction extends ActionSupport implements SessionAware {
-	// Constants
-	public static final String CLIENT = "client";
-	
+public class ClientValidateAction extends ActionSupport implements SessionAware, Preparable {
+
 	// Fields
 	private Long clientId;
 	private String firstName;
@@ -32,38 +32,78 @@ public class ClientValidateAction extends ActionSupport implements SessionAware 
 	
 	// Session
 	private Map<String, Object> session;
-	private Client client = new Client();
-	private List<Client> clients = new ArrayList<Client>();
-
+	private Client client;
+	private List<Client> clients;
+	
+	// DI via Spring
+	private ClientDAO clientDao;
+	
 	@SuppressWarnings("unchecked")
+	public void prepare() throws Exception {
+		if (session.containsKey(Constants.MODEL_CLIENT) ) {
+			client = (Client) session.get(Constants.MODEL_CLIENT);
+			setClientId(client.getClientId());
+			setFirstName(client.getFirstName());
+			setLastName(client.getLastName());
+			setUsername(client.getUsername());
+			setPassword("******");
+			setActive(client.getActive());
+			setView(client.getClientPrivilege().getView());
+			setInsert(client.getClientPrivilege().getInsert());
+			setUpdate(client.getClientPrivilege().getUpdate());
+			setDelete(client.getClientPrivilege().getDelete());
+		}
+		
+		if (session.containsKey(Constants.CLIENTS)) {
+			clients = (List<Client>) session.get(Constants.CLIENTS);		
+		}  
+	}
+
 	public String execute() {
 		
-		if (session.containsKey("clients")) {
-			
-			clients = (List<Client>) session.get("clients");
-			
+		if (clientId != null) {
+			client = (Client) session.get(Constants.MODEL_CLIENT);
+		} else {
+			client = new Client();
 		}
 		
-		// Encrypt password
-		if (clientId == null) {
-			client.setPassword(EncryptPassword.encrypt(password));
-		}
-		
-		// Activate
+		client.setFirstName(firstName);
+		client.setLastName(lastName);
+		client.setUsername(username);
 		client.setActive(active);
 		
-		// Add Privileges
-		ClientPrivilege clientPrivilege = new ClientPrivilege(client, view, insert, update, delete);
+		// If new client is issued
+		if (clientId == null) {
+			// Encrypt password if new Client
+			client.setPassword(EncryptPassword.encrypt(password));
+			
+			client.setClientPrivilege(
+					new ClientPrivilege(client, view, insert, update, delete));
+		} else {
+			ClientPrivilege privilege = client.getClientPrivilege();
+			privilege.setView(view);
+			privilege.setInsert(insert);
+			privilege.setUpdate(update);
+			privilege.setDelete(delete);
+			
+			client.setClientPrivilege(privilege);
+		}
 		
-		client.setClientPrivilege(clientPrivilege);
-		
-		session.put(CLIENT, client);
-
-		session.put("clients", clients);
+		session.put(Constants.MODEL_CLIENT, client);
 		
 		return SUCCESS;
-		
 	}
+	
+    /** 
+     * Gets the action name. This is just the bare name without ".action" extension. 
+     * This is equivalent to "#context['struts.actionMapping'].name" from in a JSP. 
+     * 
+     * @return the action name 
+     */ 
+/*    public String getActionName() 
+    { 
+        return ActionContext.getContext().getName(); 
+    } */  //FIXME
 	
 	public Long getClientId() {
 		return clientId;
@@ -157,7 +197,7 @@ public class ClientValidateAction extends ActionSupport implements SessionAware 
 	public void setDelete(boolean delete) {
 		this.delete = delete;
 	}
-
+	
 	public Client getClient() {
 		return client;
 	}
@@ -173,7 +213,11 @@ public class ClientValidateAction extends ActionSupport implements SessionAware 
 	public void setClients(List<Client> clients) {
 		this.clients = clients;
 	}
-	
+
+	public void setClientDao(ClientDAO clientDao) {
+		this.clientDao = clientDao;
+	}
+
 	public void setSession(Map<String, Object> session) {
 		this.session = session;
 	}

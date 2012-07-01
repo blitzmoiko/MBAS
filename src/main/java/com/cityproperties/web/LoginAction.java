@@ -6,12 +6,11 @@ import org.apache.struts2.interceptor.SessionAware;
 
 import com.cityproperties.dao.ClientDAO;
 import com.cityproperties.domain.Client;
+import com.cityproperties.util.Constants;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 
 public class LoginAction extends ActionSupport implements SessionAware {
-	// Constants
-	private final String CLIENT = "client";
 
 	// Fields
 	private String username;
@@ -30,7 +29,7 @@ public class LoginAction extends ActionSupport implements SessionAware {
 			addActionError(getText("error.login"));
 			return INPUT;
 		} else {
-			session.put(CLIENT, client);
+			session.put(Constants.CLIENT, client);
 			return SUCCESS;
 		}
 	}
@@ -65,7 +64,6 @@ public class LoginAction extends ActionSupport implements SessionAware {
 		this.clientDao = clientDao;
 	}
 
-	@Override
 	public void setSession(Map<String, Object> session) {
 		this.session = session;
 	}
