@@ -6,20 +6,6 @@
 <struts>
 	<package name="default" namespace="/Application" extends="struts-default">
 	
-	<!-- Interceptor  -->
-	<!-- <interceptors>
-		<interceptor-stack name="myStack">
-			<interceptor-ref name="params" />
-			<interceptor-ref name="paramsPrepareParamsStack">
-				<param name="validation.excludeMethods"> 
-					list,delete
-				</param>
-				<param name="exception.logEnabled">true</param>
-				<param name="exception.logLevel">ERROR</param>
-			</interceptor-ref>
-		</interceptor-stack>
-	</interceptors> -->
-	 
 	<!-- Main -->
 	<action name="main" class="com.cityproperties.web.ForwardAction">
 		<result>content/main.jsp</result>
@@ -29,44 +15,54 @@
 	<!-- Login -->
 	<action name="login" class="com.cityproperties.web.LoginAction">
 		<result name="input">content/login.jsp</result>
-		<result type="redirect">main</result>
+		<result type="redirect">main.action</result>
 	</action>
 
 
 	<!-- Change Password -->
 	<action name="changePassword" class="com.cityproperties.web.ChangePasswordAction">
 		<result name="input">content/change_password.jsp</result>
-		<result type="redirect">main</result>
+		<result type="redirect">main.action</result>
 	</action>
 
 
 	<!-- Client -->
-	<action name="listClient" method="list"
+	<action name="listClient" method="list" 
 		class="com.cityproperties.web.ClientAction">
 		<result>content/manage_client.jsp</result>
 	</action>
-	
+
 	<action name="validateClient" 
-			class="com.cityproperties.web.ClientValidateAction">
+		class="com.cityproperties.web.ClientValidateAction">
 		<result name="input">content/manage_client.jsp</result>
-		<result>
-			<param name="actionName">saveOrUpdateClient</param>
-		</result>
+		<result type="redirect">saveOrUpdateClient.action</result>
 	</action>
 
 	<action name="saveOrUpdateClient" method="saveOrUpdate"
 		class="com.cityproperties.web.ClientAction">
-		<result>content/main.jsp</result>
+		<result type="redirect">listClient.action</result>
 	</action>
 
 	<action name="editClient" method="edit"
 		class="com.cityproperties.web.ClientAction">
-		<result>/register.jsp</result>
+		<result>content/manage_client.jsp?client=${client}</result>
 	</action>
 
 	<action name="deleteClient" method="delete"
 		class="com.cityproperties.web.ClientAction">
-		<result type="redirect">listClient</result>
+		<result type="redirect">listClient.action</result>
+	</action>
+
+
+	<!-- Client Privilege -->
+	<action name="listClientPrivilege" method="list"
+		class="com.cityproperties.web.ClientPrivilegeAction">
+		<result>content/view_client_privilege.jsp</result>
+	</action>
+
+	<action name="copyPrivilegesToClient" method="list"
+		class="com.cityproperties.web.BusinessAssociateAction">
+		<result>content/manage_ba.jsp</result>
 	</action>
 
 
@@ -76,29 +72,27 @@
 		<result>content/manage_ba.jsp</result>
 	</action>
 
-	<action name="validateBA" 
-			class="com.cityproperties.web.BusinessAssociateValidateAction">
+	<action name="validateBA"  
+		class="com.cityproperties.web.BusinessAssociateValidateAction">
 		<result name="input">content/manage_ba.jsp</result>
-		<result>
-			<param name="actionName">saveOrUpdateBA</param>
-		</result>
+		<result type="redirect">saveOrUpdateBA.action</result>
 	</action>
 	
 	<action name="saveOrUpdateBA" method="saveOrUpdate"
 		class="com.cityproperties.web.BusinessAssociateAction">
-		<result>content/main.jsp</result>
+		<result type="redirect">listBA.action</result>
 	</action>
 
 	<action name="editBA" method="edit"
 		class="com.cityproperties.web.BusinessAssociateAction">
-		<result>/register.jsp</result>
+		<result>content/manage_ba.jsp?businessAssociate=${businessAssociate}</result>
 	</action>
 
 	<action name="deleteBA" method="delete"
 		class="com.cityproperties.web.BusinessAssociateAction">
-		<result type="redirect">listBA</result>
+		<result type="redirect">listBA.action</result>
 	</action>
-		
+	
 	</package>
 
 </struts>
