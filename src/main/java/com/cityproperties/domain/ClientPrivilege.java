@@ -32,15 +32,15 @@ public class ClientPrivilege implements Serializable {
 	@Type(type="yes_no")
 	private Boolean view;
 
-	@Column(name = "HAS_UPDATE")
+	@Column(name = "HAS_INSERT")
 	@Type(type="yes_no")
 	private Boolean insert;
 
-	@Column(name = "HAS_DELETE")
+	@Column(name = "HAS_UPDATE")
 	@Type(type="yes_no")
 	private Boolean update;
 
-	@Column(name = "HAS_INSERT")
+	@Column(name = "HAS_DELETE")
 	@Type(type="yes_no")
 	private Boolean delete;
 

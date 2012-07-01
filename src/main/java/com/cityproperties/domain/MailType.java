@@ -1,5 +1,6 @@
 package com.cityproperties.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -19,7 +20,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "C_MAIL_TYPE")
-public class MailType implements java.io.Serializable {
+public class MailType implements Serializable {
 	//TODO Generate Java Doc
 	
 	@Id

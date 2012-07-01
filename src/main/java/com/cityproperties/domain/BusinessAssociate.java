@@ -1,5 +1,6 @@
 package com.cityproperties.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,7 +22,7 @@ import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "C_BA")
-public class BusinessAssociate implements java.io.Serializable {
+public class BusinessAssociate implements Serializable {
 	//TODO Generate Java Doc
 	
 	@Id
