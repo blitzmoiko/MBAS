@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,8 +22,9 @@ import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 
 @Entity
 @Table(name = "C_CLIENT")
-public class Client implements Serializable {
-
+public class Client 
+		implements Serializable, Comparable<Client> {
+	
 	@Id
 	@SequenceGenerator(name = "clientSeq", sequenceName="CLIENT_SEQUENCE", allocationSize = 1, initialValue= 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "clientSeq")
@@ -49,7 +51,7 @@ public class Client implements Serializable {
 	@Type(type="yes_no")
 	private Boolean active = false;
 
-	@OneToMany(mappedBy = "client")
+	@OneToMany(mappedBy = "client", fetch=FetchType.EAGER)
 	private Set<BusinessAssociate> businessAssociates = 
 			new HashSet<BusinessAssociate>(0);
 
@@ -83,6 +85,26 @@ public class Client implements Serializable {
 		this.active = active;
 		this.businessAssociates = businessAssociates;
 		this.clientPrivilege = clientPrivilege;
+	}
+	
+	public int compareTo(Client o) {
+	    final int BEFORE = -1;
+	    final int EQUAL = 0;
+	    final int AFTER = 1;
+	    
+	    if ( this == o ) return EQUAL;
+		
+		if (!this.firstName.equalsIgnoreCase(o.firstName))
+			return this.firstName.compareTo(o.firstName);
+		if (!this.lastName.equalsIgnoreCase(o.lastName))
+			return this.lastName.compareTo(o.lastName);
+		
+		if (!this.zuper && o.zuper) return BEFORE;
+		if (this.zuper && !o.zuper) return AFTER;
+		if (!this.active && o.active) return BEFORE;
+		if (this.active && !o.active) return AFTER;
+		
+		return this.username.compareTo(o.username);
 	}
 
 	public Long getClientId() {

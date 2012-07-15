@@ -17,11 +17,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "C_MAIL_TYPE")
-public class MailType implements Serializable {
-	//TODO Generate Java Doc
+public class MailType 
+		implements Serializable, Comparable<MailType> {
 	
 	@Id
 	@SequenceGenerator(name = "mtSeq", sequenceName="MAIL_TYPE_SEQUENCE", allocationSize = 1, initialValue= 1)
@@ -29,21 +31,22 @@ public class MailType implements Serializable {
 	@Column(name = "M_TYPE_ID")
 	private Long mailTypeId;
 	
-	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY, optional=false)
+	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER, optional=false)
 	@JoinColumn(name = "L_CONTENT_ID")
 	private LetterContent letterContent;
 	
-	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY, optional=false)
+	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
 	@JoinColumn(name = "L_TEMPLATE_ID")
 	private LetterTemplate letterTemplate;
 	
 	@Column(name = "TYPE_NAME")		
-	private String description;
+	private String name;
 	
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "REVISION_DATE")		
 	private Date revisionDate;
 	
-	@OneToMany(mappedBy = "mailType")	
+	@OneToMany(fetch=FetchType.EAGER, mappedBy = "mailType")	
 	private Set<MailRecord> mailRecords = new HashSet<MailRecord>(0);
 
 	public MailType() {/* Default constructor for hibernate */}
@@ -52,15 +55,15 @@ public class MailType implements Serializable {
 	 * @param mailTypeId
 	 * @param letterContent
 	 * @param letterTemplate
-	 * @param description
+	 * @param name
 	 * @param revisionDate
 	 */
 	public MailType(Long mailTypeId, LetterContent letterContent,
-			LetterTemplate letterTemplate, String description, Date revisionDate) {
+			LetterTemplate letterTemplate, String name, Date revisionDate) {
 		this.mailTypeId = mailTypeId;
 		this.letterContent = letterContent;
 		this.letterTemplate = letterTemplate;
-		this.description = description;
+		this.name = name;
 		this.revisionDate = revisionDate;
 	}
 
@@ -68,19 +71,25 @@ public class MailType implements Serializable {
 	 * @param mailTypeId
 	 * @param letterContent
 	 * @param letterTemplate
-	 * @param description
+	 * @param name
 	 * @param revisionDate
 	 * @param mailRecords
 	 */
 	public MailType(Long mailTypeId, LetterContent letterContent,
-			LetterTemplate letterTemplate, String description, Date revisionDate,
+			LetterTemplate letterTemplate, String name, Date revisionDate,
 			Set<MailRecord> mailRecords) {
 		this.mailTypeId = mailTypeId;
 		this.letterContent = letterContent;
 		this.letterTemplate = letterTemplate;
-		this.description = description;
+		this.name = name;
 		this.revisionDate = revisionDate;
 		this.mailRecords = mailRecords;
+	}
+	
+	public int compareTo(MailType o) {
+		if (this.name.equalsIgnoreCase(o.name))
+			return name.compareTo(o.name);
+		return this.revisionDate.compareTo(o.revisionDate);
 	}
 
 	/**
@@ -126,17 +135,17 @@ public class MailType implements Serializable {
 	}
 
 	/**
-	 * @return the description
+	 * @return the name
 	 */
-	public String getDescription() {
-		return description;
+	public String getName() {
+		return name;
 	}
 
 	/**
 	 * @param description the description to set
 	 */
-	public void setDescription(String description) {
-		this.description = description;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	/**

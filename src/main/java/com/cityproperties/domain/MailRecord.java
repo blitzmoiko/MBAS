@@ -19,13 +19,13 @@ import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "C_MAIL_RECORD")
-public class MailRecord implements Serializable {
-	//TODO Generate Java Doc
+public class MailRecord 
+		implements Serializable {
 	
 	@Id
 	@SequenceGenerator(name = "mrSeq", sequenceName=" MAIL_RECORD_SEQUENCE", allocationSize = 1, initialValue= 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mrSeq")
-	@Column(name = "M_RECORD_ID")
+	@Column(name = "M_REC_ID")
 	private Integer mailRecordId;
 	
 	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY, optional=false)

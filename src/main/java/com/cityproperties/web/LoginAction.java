@@ -3,6 +3,7 @@ package com.cityproperties.web;
 import java.util.Map;
 
 import org.apache.struts2.interceptor.SessionAware;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cityproperties.dao.ClientDAO;
 import com.cityproperties.domain.Client;
@@ -10,7 +11,9 @@ import com.cityproperties.util.Constants;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 
-public class LoginAction extends ActionSupport implements SessionAware {
+public class LoginAction 
+		extends ActionSupport 
+		implements SessionAware {
 
 	// Fields
 	private String username;
@@ -60,6 +63,7 @@ public class LoginAction extends ActionSupport implements SessionAware {
 		this.client = client;
 	}
 
+	@Autowired
 	public void setClientDao(ClientDAO clientDao) {
 		this.clientDao = clientDao;
 	}

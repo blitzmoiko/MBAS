@@ -14,7 +14,9 @@ import com.cityproperties.util.Constants;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
 
-public class ClientAction extends ActionSupport implements SessionAware, Preparable {
+public class ClientAction 
+		extends ActionSupport 
+		implements SessionAware, Preparable {
 
 	// Session
 	private Map<String, Object> session;
@@ -25,7 +27,7 @@ public class ClientAction extends ActionSupport implements SessionAware, Prepara
 	private ClientDAO clientDao;
 	
 	@SuppressWarnings("unchecked")
-	public void prepare() throws Exception {
+	public void prepare() {
 		if (session.containsKey(Constants.MODEL_CLIENT)) {
 			client = (Client) session.get(Constants.MODEL_CLIENT);
 		}
@@ -40,7 +42,7 @@ public class ClientAction extends ActionSupport implements SessionAware, Prepara
 	}
 
 	/**
-	 * To save or update user.
+	 * To save or update client.
 	 * @return String
 	 */
 	public String saveOrUpdate() {
@@ -50,7 +52,7 @@ public class ClientAction extends ActionSupport implements SessionAware, Prepara
 	}
 
 	/**
-	 * To list all users.
+	 * To list all clients.
 	 * @return String
 	 */
 	public String list() {
@@ -60,18 +62,17 @@ public class ClientAction extends ActionSupport implements SessionAware, Prepara
 	}
 
 	/**
-	 * To delete a user.
+	 * To delete a client.
 	 * @return String
 	 */
 	public String delete() {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		clientDao.removeById(Long.parseLong(request.getParameter("id")));
-		session.put(Constants.MODEL_CLIENT, client);
 		return SUCCESS;
 	}
 	
 	/**
-	 * To list a single user by Id.
+	 * To list a single client by Id.
 	 * @return String
 	 */
 	public String edit() {
@@ -80,17 +81,6 @@ public class ClientAction extends ActionSupport implements SessionAware, Prepara
 		session.put(Constants.MODEL_CLIENT, client);
 		return SUCCESS;
 	}
-	
-    /** 
-     * Gets the action name. This is just the bare name without ".action" extension. 
-     * This is equivalent to "#context['struts.actionMapping'].name" from in a JSP. 
-     * 
-     * @return the action name 
-     */ 
- /*   public String getActionName() 
-    { 
-        return ActionContext.getContext().getName(); 
-    } */ // FIXME
 	
 	public Client getClient() {
 		return client;

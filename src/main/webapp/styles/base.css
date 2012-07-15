@@ -1,0 +1,121 @@
+	body {
+		background: #EEE;
+		padding: 10px 0;
+		font-family: verdana, arial, sans-serif;
+	}
+	
+	* {
+		margin: 0;
+		padding: 0;
+	}
+
+	label.label {
+		font-size: .9em;
+		font-family: verdana, arial, sans-serif;
+	}
+	
+	table.display {
+		width: 100%;
+	}
+	
+	tr td.tdLabel {
+		font-size: 1em;
+		text-align: left;
+		padding: 1px 5px;
+	}
+
+	tr td {
+		font-size: .7em;
+	}
+	
+	th {
+		font-size: .9em;
+	}
+	
+	h2 {
+		font-size: 1.5em;
+	}
+	
+	select {
+		font-size: .9em;
+	}
+	
+	input[type="text"] {
+		font-size: 1.2em;
+		font-family: verdana, arial, sans-serif;
+	}
+	
+	a.button, a#button {
+	    background-color:#DDD;
+		border:1px solid #AAA;
+		border-bottom-left-radius:5px;
+		border-bottom-right-radius:5px;
+		border-top-left-radius:5px;
+		border-top-right-radius:5px;
+		color:#333333 !important;
+		cursor:pointer;
+		margin:0 3px;
+		padding:2px 5px;
+		text-decoration: none !important;
+   }
+
+	a.button:hover, a#button:hover {
+		background-color: #CCC;
+		text-decoration: none !important;
+	}
+	
+	.sf-menu {
+		font-size: .9em;
+		font-family: helvetica, georgia, serif;
+		font-weight: bold;
+	}
+	
+	.dataTables_info {
+		width: inherit;		
+	}
+	
+	.dataTables_length, .dataTables_info, .dataTables_filter, .dataTables_paginate {
+		font-size: .7em;
+	}
+
+	.ex_highlight #clientTable tbody tr.even:hover,#clientTable tbody tr.even td.highlighted
+		{
+		background-color: #ECFFB3;
+	}
+	
+	.ex_highlight #clientTable tbody tr.odd:hover,#clientTable tbody tr.odd td.highlighted
+		{
+		background-color: #E6FF99;
+	}
+	
+	.ex_highlight_row #clientTable tr.even:hover {
+		background-color: #ECFFB3;
+	}
+	
+	.ex_highlight_row #clientTable tr.even:hover td.sorting_1 {
+		background-color: #DDFF75;
+	}
+	
+	.ex_highlight_row #clientTable tr.even:hover td.sorting_2 {
+		background-color: #E7FF9E;
+	}
+	
+	.ex_highlight_row #clientTable tr.even:hover td.sorting_3 {
+		background-color: #E2FF89;
+	}
+	
+	.ex_highlight_row #clientTable tr.odd:hover {
+		background-color: #E6FF99;
+	}
+	
+	.ex_highlight_row #clientTable tr.odd:hover td.sorting_1 {
+		background-color: #D6FF5C;
+	}
+	
+	.ex_highlight_row #clientTable tr.odd:hover td.sorting_2 {
+		background-color: #E0FF84;
+	}
+	
+	.ex_highlight_row #clientTable tr.odd:hover td.sorting_3 {
+		background-color: #DBFF70;
+	}

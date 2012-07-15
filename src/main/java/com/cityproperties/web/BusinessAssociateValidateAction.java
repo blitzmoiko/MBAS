@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.struts2.interceptor.SessionAware;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.cityproperties.dao.BusinessAssociateDAO;
 import com.cityproperties.dao.ClientDAO;
 import com.cityproperties.domain.BusinessAssociate;
 import com.cityproperties.util.Constants;
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
 import com.opensymphony.xwork2.validator.annotations.EmailValidator;
@@ -19,7 +19,9 @@ import com.opensymphony.xwork2.validator.annotations.RegexFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.RequiredFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 
-public class BusinessAssociateValidateAction extends ActionSupport implements SessionAware, Preparable {
+public class BusinessAssociateValidateAction 
+		extends ActionSupport 
+		implements SessionAware, Preparable {
 
 	// Fields
 	private Long businessAssociateId;
@@ -46,12 +48,9 @@ public class BusinessAssociateValidateAction extends ActionSupport implements Se
 	private BusinessAssociateDAO businessAssociateDao;
 	
 	@SuppressWarnings("unchecked")
-	public void prepare() throws Exception {
-		// TODO
-		ActionContext.getContext().getValueStack();
-		
-		if (session.containsKey(Constants.BAS)) {
-			businessAssociate = (BusinessAssociate) session.get(Constants.BA);
+	public void prepare() {
+		if (session.containsKey(Constants.MODEL_BA)) {
+			businessAssociate = (BusinessAssociate) session.get(Constants.MODEL_BA);
 			setBusinessAssociateId(businessAssociate.getBusinessAssociateId());
 			setFirstName(businessAssociate.getFirstName());
 			setMiddleName(businessAssociate.getMiddleName());
@@ -65,7 +64,6 @@ public class BusinessAssociateValidateAction extends ActionSupport implements Se
 			setAnniversaryDate(businessAssociate.getAnniversaryDate());
 			setRegToUserId(businessAssociate.getClient().getClientId());
 			setSupplier(businessAssociate.getSupplier());
-			
 		} 	
 		
 		if (session.containsKey(Constants.BAS)) {
@@ -84,14 +82,7 @@ public class BusinessAssociateValidateAction extends ActionSupport implements Se
 		businessAssociate.setFirstName(firstName);
 		businessAssociate.setMiddleName(middleName);
 		businessAssociate.setLastName(lastName);
-		
-		// Set gender
-		if (gender.startsWith(Constants.MALE)) {
-			businessAssociate.setSex(Constants.MALE);
-		} else if (gender.startsWith(Constants.FEMALE)) {
-			businessAssociate.setSex(Constants.FEMALE);
-		}
-		
+		businessAssociate.setSex(gender);
 		businessAssociate.setEmail(email);
 		businessAssociate.setHomePhone(homePhone);
 		businessAssociate.setWorkPhone(workPhone);
@@ -187,7 +178,7 @@ public class BusinessAssociateValidateAction extends ActionSupport implements Se
 	}
 	
 	@RequiredFieldValidator(message="Birth date is required.")
-	@DateTimeFormat(pattern="dd-MM-yyyy")
+	@DateTimeFormat(pattern="dd-MM-yy")
 	public Date getBirthDate() {
 		return birthDate;
 	}
@@ -196,7 +187,7 @@ public class BusinessAssociateValidateAction extends ActionSupport implements Se
 		this.birthDate = birthDate;
 	}
 	
-	@DateTimeFormat(pattern="dd-MM-yyyy")
+	@DateTimeFormat(pattern="dd-MM-yy")
 	public Date getAnniversaryDate() {
 		return anniversaryDate;
 	}
@@ -229,14 +220,16 @@ public class BusinessAssociateValidateAction extends ActionSupport implements Se
 		this.businessAssociates = businessAssociates;
 	}
 
+	@Autowired
+	public void setClientDao(ClientDAO clientDao) {
+		this.clientDao = clientDao;
+	}
+	
+	@Autowired
 	public void setBusinessAssociateDao(BusinessAssociateDAO businessAssociateDao) {
 		this.businessAssociateDao = businessAssociateDao;
 	}
 	
-	public void setClientDao(ClientDAO clientDao) {
-		this.clientDao = clientDao;
-	}
-
 	public void setSession(Map<String, Object> session) {
 		this.session = session;
 	}

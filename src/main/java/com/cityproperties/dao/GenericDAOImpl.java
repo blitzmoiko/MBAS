@@ -20,7 +20,6 @@ import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.googlecode.genericdao.dao.DAOUtil;
-import com.googlecode.genericdao.dao.hibernate.GenericDAO;
 import com.googlecode.genericdao.dao.hibernate.HibernateBaseDAO;
 import com.googlecode.genericdao.search.ExampleOptions;
 import com.googlecode.genericdao.search.Filter;
@@ -43,8 +42,9 @@ import com.googlecode.genericdao.search.SearchResult;
  */
 @Transactional
 @SuppressWarnings("unchecked")
-public class GenericDAOImpl<T, ID extends Serializable> extends
-		HibernateBaseDAO implements GenericDAO<T, ID> {
+public class GenericDAOImpl<T, ID extends Serializable> 
+		extends HibernateBaseDAO 
+		implements GenericDAO<T, ID> {
 
 	protected Class<T> persistentClass = (Class<T>) DAOUtil.getTypeArguments(GenericDAOImpl.class, this.getClass()).get(0);
 
@@ -52,6 +52,10 @@ public class GenericDAOImpl<T, ID extends Serializable> extends
 		if (search == null)
 			search = new Search();
 		return _count(persistentClass, search);
+	}
+	
+	public int count() {
+		return _count(persistentClass);
 	}
 
 	public T find(Serializable id) {

@@ -16,8 +16,9 @@ import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "C_CLIENT_PRIVILEGE")
-public class ClientPrivilege implements Serializable {
-
+public class ClientPrivilege 
+		implements Serializable, Comparable<ClientPrivilege> {
+	
 	@Id
 	@Column(name = "CLIENT_ID", unique = true, nullable = false)
 	@GeneratedValue(generator = "gen")
@@ -53,6 +54,14 @@ public class ClientPrivilege implements Serializable {
 		this.insert = insert;
 		this.update = update;
 		this.delete = delete;
+	}
+	
+	public int compareTo(ClientPrivilege o) {
+	    final int EQUAL = 0;
+	    
+	    if ( this == o ) return EQUAL;
+		
+		return this.client.compareTo(o.client);
 	}
 
 	public Long getClientId() {

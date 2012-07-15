@@ -1,55 +1,82 @@
 package com.cityproperties.web;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.interceptor.SessionAware;
 
 import com.cityproperties.dao.LetterContentDAO;
 import com.cityproperties.domain.LetterContent;
-import com.opensymphony.xwork2.Action;
-import com.opensymphony.xwork2.ActionContext;
+import com.cityproperties.util.Constants;
 import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.ModelDriven;
+import com.opensymphony.xwork2.Preparable;
 
-public class LetterContentAction extends ActionSupport implements ModelDriven<LetterContent> {
+public class LetterContentAction 
+		extends ActionSupport 
+		implements SessionAware, Preparable {
 
-	private LetterContent letterContent = new LetterContent();
-	private List<LetterContent> letterContents = new ArrayList<LetterContent>();
+	// Session
+	private Map<String, Object> session;
+	private LetterContent letterContent;
+	private List<LetterContent> letterContents;
 	
-	private LetterContentDAO letterContentDao;
 	//DI via Spring
-	public void setLetterContentDao(LetterContentDAO letterContentDao) {
-		this.letterContentDao = letterContentDao;
-	}
+	private LetterContentDAO letterContentDao;
 
-	public LetterContent getModel() {
-		return letterContent;
+	@SuppressWarnings("unchecked")
+	public void prepare() {
+		if (session.containsKey(Constants.MODEL_LETTER_CONTENT)) {
+			letterContent = (LetterContent) session.get(Constants.MODEL_LETTER_CONTENT);
+		}
+		
+		if (session.containsKey(Constants.LETTER_CONTENTS)) {
+			letterContents = (List<LetterContent>) session.get(Constants.LETTER_CONTENTS);		
+		}
 	}
-
+	
+	public String execute() {
+		return SUCCESS;
+	}
+	
+	/**
+	 * To save or update letter content.
+	 * @return String
+	 */
 	public String saveOrUpdate() {
 		letterContentDao.save(letterContent);
-		return Action.SUCCESS;
+		return SUCCESS;
 	}
 	
+	/**
+	 * To list all letter contents.
+	 * @return String
+	 */	
 	public String list() {
 		letterContents = letterContentDao.findAll();
-		return Action.SUCCESS;
+		return SUCCESS;
 	}
 	
+	/**
+	 * To delete a letter content.
+	 * @return String
+	 */
 	public String delete() {
-		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
-		letterContent = letterContentDao.find(Long.parseLong(request.getParameter("id")));
-		letterContentDao.remove(letterContent);
-		return Action.SUCCESS;
+		HttpServletRequest request = ServletActionContext.getRequest();
+		letterContentDao.removeById(Long.parseLong(request.getParameter("id")));
+		return SUCCESS;
 	}
 	
-	public String edit()
-	{
-		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
+	/**
+	 * To list a single letter content by Id.
+	 * @return String
+	 */
+	public String edit() {
+		HttpServletRequest request = ServletActionContext.getRequest();
 		letterContent = letterContentDao.find(Long.parseLong(request.getParameter("id")));
+		session.put(Constants.MODEL_LETTER_CONTENT, letterContent);
 		return SUCCESS;
 	}
 
@@ -67,6 +94,14 @@ public class LetterContentAction extends ActionSupport implements ModelDriven<Le
 
 	public void setLetterContents(List<LetterContent> letterContents) {
 		this.letterContents = letterContents;
+	}
+
+	public void setLetterContentDao(LetterContentDAO letterContentDao) {
+		this.letterContentDao = letterContentDao;
+	}
+	
+	public void setSession(Map<String, Object> session) {
+		this.session = session;
 	}
 
 }

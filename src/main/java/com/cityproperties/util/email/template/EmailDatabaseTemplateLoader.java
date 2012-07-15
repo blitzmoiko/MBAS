@@ -9,7 +9,8 @@ import com.cityproperties.domain.MailType;
 
 import freemarker.cache.TemplateLoader;
 
-public class EmailDatabaseTemplateLoader implements TemplateLoader {
+public class EmailDatabaseTemplateLoader 
+		implements TemplateLoader {
 
 	private MailTypeDAO mailTypeDao;
 

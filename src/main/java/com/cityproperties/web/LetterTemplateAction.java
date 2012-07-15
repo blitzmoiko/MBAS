@@ -1,55 +1,82 @@
 package com.cityproperties.web;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.interceptor.SessionAware;
 
 import com.cityproperties.dao.LetterTemplateDAO;
 import com.cityproperties.domain.LetterTemplate;
-import com.opensymphony.xwork2.Action;
-import com.opensymphony.xwork2.ActionContext;
+import com.cityproperties.util.Constants;
 import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.ModelDriven;
+import com.opensymphony.xwork2.Preparable;
 
-public class LetterTemplateAction extends ActionSupport implements ModelDriven<LetterTemplate> {
-
-	private LetterTemplate letterTemplate = new LetterTemplate();
-	private List<LetterTemplate> letterTemplates = new ArrayList<LetterTemplate>();
+public class LetterTemplateAction 
+		extends ActionSupport 
+		implements SessionAware, Preparable {
 	
-	private LetterTemplateDAO letterTemplateDao;
+	// Session
+	private Map<String, Object> session;
+	private LetterTemplate letterTemplate;
+	private List<LetterTemplate> letterTemplates;
+	
 	//DI via Spring
-	public void setLetterTemplateDao(LetterTemplateDAO letterTemplateDao) {
-		this.letterTemplateDao = letterTemplateDao;
+	private LetterTemplateDAO letterTemplateDao;
+	
+	@SuppressWarnings("unchecked")
+	public void prepare() {
+		if (session.containsKey(Constants.MODEL_LETTER_TEMPLATE)) {
+			letterTemplate = (LetterTemplate) session.get(Constants.MODEL_LETTER_TEMPLATE);
+		}
+		
+		if (session.containsKey(Constants.LETTER_TEMPLATES)) {
+			letterTemplates = (List<LetterTemplate>) session.get(Constants.LETTER_TEMPLATES);		
+		}
 	}
-
-	public LetterTemplate getModel() {
-		return letterTemplate;
+	
+	public String execute() {
+		return SUCCESS;
 	}
-
+	
+	/**
+	 * To save or update letter template.
+	 * @return String
+	 */
 	public String saveOrUpdate() {
 		letterTemplateDao.save(letterTemplate);
-		return Action.SUCCESS;
+		return SUCCESS;
 	}
 	
+	/**
+	 * To list all letter templates.
+	 * @return String
+	 */	
 	public String list() {
 		letterTemplates = letterTemplateDao.findAll();
-		return Action.SUCCESS;
+		return SUCCESS;
 	}
 	
+	/**
+	 * To delete a letter template.
+	 * @return String
+	 */
 	public String delete() {
-		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
-		letterTemplate = letterTemplateDao.find(Long.parseLong(request.getParameter("id")));
-		letterTemplateDao.remove(letterTemplate);
-		return Action.SUCCESS;
+		HttpServletRequest request = ServletActionContext.getRequest();
+		letterTemplateDao.removeById(Long.parseLong(request.getParameter("id")));
+		return SUCCESS;
 	}
 	
-	public String edit()
-	{
-		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
+	/**
+	 * To list a single letter template by Id.
+	 * @return String
+	 */
+	public String edit()	{
+		HttpServletRequest request = ServletActionContext.getRequest();
 		letterTemplate = letterTemplateDao.find(Long.parseLong(request.getParameter("id")));
+		session.put(Constants.MODEL_LETTER_TEMPLATE, letterTemplate);
 		return SUCCESS;
 	}
 	
@@ -67,6 +94,14 @@ public class LetterTemplateAction extends ActionSupport implements ModelDriven<L
 
 	public void setLetterTemplates(List<LetterTemplate> letterTemplates) {
 		this.letterTemplates = letterTemplates;
+	}
+
+	public void setLetterTemplateDao(LetterTemplateDAO letterTemplateDao) {
+		this.letterTemplateDao = letterTemplateDao;
+	}
+	
+	public void setSession(Map<String, Object> session) {
+		this.session = session;
 	}
 
 }

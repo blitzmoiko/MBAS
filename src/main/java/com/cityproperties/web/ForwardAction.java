@@ -10,7 +10,9 @@ import com.cityproperties.domain.Client;
 import com.cityproperties.util.Constants;
 import com.opensymphony.xwork2.ActionSupport;
 
-public class ForwardAction extends ActionSupport implements SessionAware {
+public class ForwardAction 
+		extends ActionSupport 
+		implements SessionAware {
 
 	// Session
 	private Map<String, Object> session;
@@ -23,6 +25,12 @@ public class ForwardAction extends ActionSupport implements SessionAware {
 	public String execute() {
 		session.remove(Constants.MODEL_CLIENT);
 		session.remove(Constants.CLIENTS);
+		session.remove(Constants.MODEL_BA);
+		session.remove(Constants.BAS);
+		session.remove(Constants.MODEL_LETTER_CONTENT);
+		session.remove(Constants.LETTER_CONTENTS);
+		session.remove(Constants.MODEL_LETTER_TEMPLATE);
+		session.remove(Constants.LETTER_TEMPLATES);
 		return SUCCESS;
 	}
 	

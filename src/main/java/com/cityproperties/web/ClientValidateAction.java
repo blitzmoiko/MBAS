@@ -4,18 +4,22 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.struts2.interceptor.SessionAware;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cityproperties.dao.ClientDAO;
 import com.cityproperties.domain.Client;
 import com.cityproperties.domain.ClientPrivilege;
 import com.cityproperties.util.Constants;
-import com.cityproperties.util.EncryptPassword;
+import com.cityproperties.util.encrypt.EncryptPassword;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
+import com.opensymphony.xwork2.validator.annotations.EmailValidator;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
 
-public class ClientValidateAction extends ActionSupport implements SessionAware, Preparable {
+public class ClientValidateAction 
+		extends ActionSupport 
+		implements SessionAware, Preparable {
 
 	// Fields
 	private Long clientId;
@@ -60,7 +64,6 @@ public class ClientValidateAction extends ActionSupport implements SessionAware,
 	}
 
 	public String execute() {
-		
 		if (clientId != null) {
 			client = (Client) session.get(Constants.MODEL_CLIENT);
 		} else {
@@ -94,17 +97,6 @@ public class ClientValidateAction extends ActionSupport implements SessionAware,
 		return SUCCESS;
 	}
 	
-    /** 
-     * Gets the action name. This is just the bare name without ".action" extension. 
-     * This is equivalent to "#context['struts.actionMapping'].name" from in a JSP. 
-     * 
-     * @return the action name 
-     */ 
-/*    public String getActionName() 
-    { 
-        return ActionContext.getContext().getName(); 
-    } */  //FIXME
-	
 	public Long getClientId() {
 		return clientId;
 	}
@@ -132,6 +124,7 @@ public class ClientValidateAction extends ActionSupport implements SessionAware,
 	}
 
 	@RequiredStringValidator(message="Username is required.")
+	@EmailValidator(message="Username is not a valid email.")
 	public String getUsername() {
 		return username;
 	}
@@ -214,6 +207,7 @@ public class ClientValidateAction extends ActionSupport implements SessionAware,
 		this.clients = clients;
 	}
 
+	@Autowired
 	public void setClientDao(ClientDAO clientDao) {
 		this.clientDao = clientDao;
 	}

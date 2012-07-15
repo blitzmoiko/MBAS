@@ -14,7 +14,9 @@ import com.cityproperties.util.Constants;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
 
-public class BusinessAssociateAction extends ActionSupport implements SessionAware, Preparable {
+public class BusinessAssociateAction 
+		extends ActionSupport 
+		implements SessionAware, Preparable {
 
 	// Session
 	private Map<String, Object> session;
@@ -32,11 +34,7 @@ public class BusinessAssociateAction extends ActionSupport implements SessionAwa
 		
 		if (session.containsKey(Constants.BAS)) {
 			businessAssociates = (List<BusinessAssociate>) session.get(Constants.BAS);		
-		}
-		else {
-			businessAssociates = businessAssociateDao.findAll();
-			session.put(Constants.BAS, businessAssociates);
-		}
+		} 
 	}
 
 	public String execute() {
@@ -44,11 +42,12 @@ public class BusinessAssociateAction extends ActionSupport implements SessionAwa
 	}
 
 	/**
-	 * To save or update user.
+	 * To save or update business associate.
 	 * @return String
 	 */
 	public String saveOrUpdate() {
 		businessAssociateDao.save(businessAssociate);
+		session.remove(Constants.MODEL_BA);
 		return SUCCESS;
 	}
 
@@ -63,7 +62,7 @@ public class BusinessAssociateAction extends ActionSupport implements SessionAwa
 	}
 
 	/**
-	 * To delete a user.
+	 * To delete a business associate.
 	 * @return String
 	 */
 	public String delete() {
@@ -73,12 +72,13 @@ public class BusinessAssociateAction extends ActionSupport implements SessionAwa
 	}
 
 	/**
-	 * To list a single user by Id.
+	 * To list a single business associate by Id.
 	 * @return String
 	 */
 	public String edit() {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		businessAssociate = businessAssociateDao.find(Long.parseLong(request.getParameter("id")));
+		session.put(Constants.MODEL_BA, businessAssociate);
 		return SUCCESS;
 	}
 

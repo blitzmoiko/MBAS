@@ -6,9 +6,10 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 
 import com.cityproperties.domain.Client;
-import com.cityproperties.util.EncryptPassword;
+import com.cityproperties.util.encrypt.EncryptPassword;
 
-public class ClientDAO_Impl extends GenericDAOImpl<Client, Serializable>
+public class ClientDAO_Impl 
+		extends GenericDAOImpl<Client, Serializable>
 		implements ClientDAO {
 
 	/*
@@ -65,5 +66,5 @@ public class ClientDAO_Impl extends GenericDAOImpl<Client, Serializable>
 		}
 
 	}
-
+	
 }

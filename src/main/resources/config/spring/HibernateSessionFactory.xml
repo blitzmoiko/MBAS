@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans
-http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<!-- Spring Default LOB Handler -->
+ 	<bean id="lobHandler" class="org.springframework.jdbc.support.lob.DefaultLobHandler" lazy-init="true" />
 
 	<!-- Hibernate session factory -->
 	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
-
 		<property name="dataSource" ref="dataSource" />
-
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</prop>
 				<prop key="hibernate.show_sql">true</prop>
+				<!-- <prop key="hibernate.cache.use_second_level_cache">true</prop> -->
+				<!-- <prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop> -->
 			</props>
 		</property>
-		
 		<property name="annotatedClasses">
 			<list>
 				<value>com.cityproperties.domain.BusinessAssociate</value>
@@ -28,7 +30,7 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 				<value>com.cityproperties.domain.MailType</value>
 			</list>
 		</property>
-
+		<property name="lobHandler" ref="lobHandler"/>
 	</bean>
 
 </beans>

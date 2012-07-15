@@ -14,7 +14,9 @@ import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 
-public class MailRecordAction extends ActionSupport implements ModelDriven<MailRecord> {
+public class MailRecordAction 
+		extends ActionSupport 
+		implements ModelDriven<MailRecord> {
 
 	private MailRecord mailRecord = new MailRecord();
 	private List<MailRecord> mailRecords = new ArrayList<MailRecord>();

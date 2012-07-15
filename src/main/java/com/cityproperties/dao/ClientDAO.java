@@ -5,7 +5,8 @@ import java.io.Serializable;
 import com.cityproperties.domain.Client;
 import com.googlecode.genericdao.dao.hibernate.GenericDAO;
 
-public interface ClientDAO extends GenericDAO<Client, Serializable> {
+public interface ClientDAO 
+		extends GenericDAO<Client, Serializable> {
 	
 	/**
 	 * Find Client object by username

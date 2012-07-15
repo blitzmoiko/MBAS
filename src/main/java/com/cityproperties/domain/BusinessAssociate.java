@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -18,12 +17,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "C_BA")
-public class BusinessAssociate implements Serializable {
-	//TODO Generate Java Doc
+public class BusinessAssociate 
+		implements Serializable, Comparable<BusinessAssociate> {
 	
 	@Id
 	@SequenceGenerator(name = "baSeq", sequenceName="BA_SEQUENCE", allocationSize = 1, initialValue= 1)
@@ -31,7 +32,8 @@ public class BusinessAssociate implements Serializable {
 	@Column(name = "BA_ID")
 	private Long businessAssociateId;
 	
-	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY, optional=false)
+	@ManyToOne(fetch=FetchType.EAGER, optional=false)
+	@Cascade({CascadeType.SAVE_UPDATE})
 	@JoinColumn(name = "CLIENT_ID")
 	private Client client;
 	
@@ -69,7 +71,7 @@ public class BusinessAssociate implements Serializable {
 	@Type(type="yes_no")
 	private Boolean supplier;
 	
-	@OneToMany(mappedBy = "businessAssociate")
+	@OneToMany(mappedBy = "businessAssociate", fetch=FetchType.EAGER)
 	private Set<MailRecord> mailRecords = new HashSet<MailRecord>(0);
 
 	public BusinessAssociate() {/* Default constructor for hibernate */}
@@ -104,6 +106,28 @@ public class BusinessAssociate implements Serializable {
 		this.anniversaryDate = anniversaryDate;
 		this.supplier = supplier;
 		this.mailRecords = mailRecords;
+	}
+
+	public int compareTo(BusinessAssociate o) {
+	    final int BEFORE = -1;
+	    final int EQUAL = 0;
+	    final int AFTER = 1;
+	    
+	    if ( this == o ) return EQUAL;
+	    
+		if (!this.firstName.equalsIgnoreCase(o.firstName))
+			return this.firstName.compareTo(o.firstName);
+		if (!this.lastName.equalsIgnoreCase(o.lastName))
+			return this.lastName.compareTo(o.lastName);
+		if (!this.sex.equalsIgnoreCase(o.sex))
+			return this.sex.compareTo(o.sex);
+		if (!this.email.equalsIgnoreCase(o.email))
+			return this.email.compareTo(o.email);
+		
+		if (!this.supplier && o.supplier) return BEFORE;
+		if (this.supplier && !o.supplier) return AFTER;
+		
+		return this.birthDate.compareTo(o.birthDate);
 	}
 
 	public Long getBusinessAssociateId() {

@@ -10,7 +10,8 @@ import com.cityproperties.dao.ClientPrivilegeDAO;
 import com.cityproperties.domain.ClientPrivilege;
 import com.opensymphony.xwork2.ActionSupport;
 
-public class ClientPrivilegeAction extends ActionSupport  {
+public class ClientPrivilegeAction 
+		extends ActionSupport  {
 
 	// Session
 	private ClientPrivilege clientPrivilege;
@@ -24,7 +25,7 @@ public class ClientPrivilegeAction extends ActionSupport  {
 	}
 
 	/**
-	 * To save or update user.
+	 * To save or update privilege.
 	 * @return String
 	 */
 	public String saveOrUpdate() {
@@ -33,7 +34,7 @@ public class ClientPrivilegeAction extends ActionSupport  {
 	}
 	
 	/**
-	 * To list all users.
+	 * To list all privileges.
 	 * @return String
 	 */	
 	public String list() {
@@ -42,7 +43,7 @@ public class ClientPrivilegeAction extends ActionSupport  {
 	}
 	
 	/**
-	 * To delete a user.
+	 * To delete a privilege.
 	 * @return String
 	 */
 	public String delete() {
@@ -52,7 +53,7 @@ public class ClientPrivilegeAction extends ActionSupport  {
 	}
 	
 	/**
-	 * To list a single user by Id.
+	 * To list a single privilege by Id.
 	 * @return String
 	 */
 	public String edit()	{
