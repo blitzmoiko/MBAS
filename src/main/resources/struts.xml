@@ -10,8 +10,8 @@
 	<action name="main" class="com.cityproperties.web.ForwardAction">
 		<result>content/main.jsp</result>
 	</action>
-	
-	
+
+
 	<!-- Login -->
 	<action name="login" class="com.cityproperties.web.LoginAction">
 		<result name="input">content/login.jsp</result>
@@ -27,12 +27,12 @@
 
 
 	<!-- Client -->
-	<action name="listClient" method="list" 
+	<action name="listClient" method="list"
 		class="com.cityproperties.web.ClientAction">
 		<result>content/manage_client.jsp</result>
 	</action>
-	
-	<action name="validateClient" 
+
+	<action name="validateClient"
 		class="com.cityproperties.web.ClientValidateAction">
 		<result name="input">content/manage_client.jsp</result>
 		<result type="redirect">saveOrUpdateClient.action</result>
@@ -52,7 +52,7 @@
 		class="com.cityproperties.web.ClientAction">
 		<result type="redirect">listClient.action</result>
 	</action>
-	
+
 	<action name="viewClient" method="list"
 		class="com.cityproperties.web.ClientAction">
 		<result>content/view_client.jsp</result>
@@ -72,12 +72,12 @@
 		<result>content/manage_ba.jsp</result>
 	</action>
 
-	<action name="validateBA"  
+	<action name="validateBA"
 		class="com.cityproperties.web.BusinessAssociateValidateAction">
 		<result name="input">content/manage_ba.jsp</result>
 		<result type="redirect">saveOrUpdateBA.action</result>
 	</action>
-	
+
 	<action name="saveOrUpdateBA" method="saveOrUpdate"
 		class="com.cityproperties.web.BusinessAssociateAction">
 		<result type="redirect">listBA.action</result>
@@ -92,20 +92,20 @@
 		class="com.cityproperties.web.BusinessAssociateAction">
 		<result type="redirect">listBA.action</result>
 	</action>
-	
+
 	<!-- Send Mail -->
 	<action name="sendMail" class="com.cityproperties.web.SendMailAction">
 		<result name="input">content/send_mail.jsp</result>
 		<result>main.action</result>
 	</action>
-	
+
 	<!-- Mail Type -->
-	<action name="listMailType" method="list" 
+	<action name="listMailType" method="list"
 		class="com.cityproperties.web.MailTypeAction">
 		<result>content/manage_mail_type.jsp</result>
 	</action>
-	
-	<action name="validateMailType" 
+
+	<action name="validateMailType"
 		class="com.cityproperties.web.ClientValidateAction">
 		<result name="input">content/manage_mail_type.jsp</result>
 		<result type="redirect">saveOrUpdateClient.action</result>
@@ -125,22 +125,22 @@
 		class="com.cityproperties.web.MailTypeAction">
 		<result type="redirect">listMailType.action</result>
 	</action>
-	
+
 	<!-- Letter Content -->
-	<action name="listLetterContent" method="list" 
+	<action name="listLetterContent" method="list"
 		class="com.cityproperties.web.LetterContentAction">
 		<result>content/manage_mail_type.jsp</result>
 	</action>
-	
-	<action name="validateLetterContent" 
+
+	<action name="validateLetterContent"
 		class="com.cityproperties.web.LetterContentValidateAction">
 		<result name="input">content/add_letter_content.jsp</result>
 		<result type="redirect">saveOrUpdateLetterContent.action</result>
 	</action>
-	
+
 	<action name="saveOrUpdateLetterContent" method="saveOrUpdate"
 		class="com.cityproperties.web.LetterContentAction">
-		<result type="redirect">tableMailType.action</result>
+		<result>content/close_page.jsp</result>
 	</action>
 
 	<action name="editLetterContent" method="edit"
@@ -152,22 +152,22 @@
 		class="com.cityproperties.web.LetterContentAction">
 		<result type="redirect">tableMailType.action</result>
 	</action>
-	
+
 	<!-- Letter Template -->
-	<action name="listLetterTemplate" method="list" 
+	<action name="listLetterTemplate" method="list"
 		class="com.cityproperties.web.LetterTemplateAction">
 		<result>content/manage_mail_type.jsp</result>
 	</action>
-	
-	<action name="validateLetterTemplate" 
+
+	<action name="validateLetterTemplate"
 		class="com.cityproperties.web.LetterTemplateValidateAction">
 		<result name="input">content/add_letter_template.jsp</result>
 		<result type="redirect">saveOrUpdateLetterTemplate.action</result>
 	</action>
-	
+
 	<action name="saveOrUpdateLetterTemplate" method="saveOrUpdate"
 		class="com.cityproperties.web.LetterTemplateAction">
-		<result type="redirect">tableMailType.action</result>
+		<result>content/close_page.jsp</result>
 	</action>
 
 	<action name="editLetterTemplate" method="edit"
@@ -179,17 +179,17 @@
 		class="com.cityproperties.web.MailTypeAction">
 		<result type="redirect">tableMailType.action</result>
 	</action>
-	
+
 	<action name="getDynamicImage"
 		class="com.cityproperties.web.LoadImageAction">
 	</action>
 
 	<!-- Mail Type Tables -->
-	<action name="tableMailType" 
+	<action name="tableMailType"
 		class="com.cityproperties.web.MailTypeMultiTableAction">
 		<result>content/manage_mail_type.jsp</result>
 	</action>
-	
+
 	</package>
 
 </struts>

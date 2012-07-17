@@ -31,7 +31,7 @@
 		        "bJQueryUI": true,
 		        "sPaginationType": "full_numbers"
 		 });
-	} );	
+	} );
 </script>
 </head>
 <body>
@@ -53,7 +53,7 @@
 				displayFormat="dd-MM-yyyy" required="true" value="%{#session.modelBusinessAssociate.birthDate}" tooltip="Choose Birth Date (dd-mm-yyyy)" />
 			<sx:datetimepicker name="anniversaryDate" key="label.anniversary_date"
 				displayFormat="dd-MM-yyyy" value="%{#session.modelBusinessAssociate.anniversaryDate}" tooltip="Choose Anniversary Date (dd-mm-yyyy)" />
-	
+
 			<s:if test="#session.client.zuper == true">
 				<sj:textfield id="regToUser" name="regToUser" key="label.reg_to_user" value="%{#session.modelBusinessAssociate.client.firstName + ' ' + #session.modelBusinessAssociate.client.lastName}" />
 				<s:hidden id="regToUserId" name="regToUserId" value="%{#session.modelBusinessAssociate.client.clientId}" />
@@ -63,14 +63,13 @@
 				<sj:textfield name="regToUser" key="label.reg_to_user" disabled="true" value="%{#session.client.firstName + ' ' + #session.client.lastName}" />
 				<s:hidden name="regToUserId" value="%{#session.client.clientId}" />
 			</s:else>
-	
+
 			<s:checkbox key="label.supplier" name="supplier" value="%{#session.modelBusinessAssociate.supplier}" />
 			<s:submit key="label.submit" name="submit" />
 			<s:submit action="main" key="label.close" name="close" onclick="form.onsubmit=null" />
 		</s:form>
 	</div>
 	<br>
-	<div id="div2">
 		<s:if test="businessAssociates.size() > 0">
 			<div id="container">
 				<table id="baTable" class="display">
@@ -85,8 +84,8 @@
 							<th>Birth Date</th>
 							<th>Anniversary Date</th>
 							<th>Supplier</th>
-							<th />
-							<th />
+							<th>Edit</th>
+							<th>Delete</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -103,13 +102,13 @@
 								<td><input type="checkbox" disabled="disabled" ${supplier ? 'checked' : ''} /></td>
 								<td><s:url id="editURL" action="editBA">
 											<s:param name="id" value="%{businessAssociateId}" />
-										</s:url> 
-										<a class="button" href="${editURL}">Edit</a>
+										</s:url>
+										<a id="edit-button" href="${editURL}">Edit</a>
 								</td>
 								<td><s:url id="deleteURL" action="deleteBA">
 											<s:param name="id" value="%{businessAssociateId}" />
 										</s:url>
-										<a class="button" href="${deleteURL}">Delete</a>
+										<a id="delete-button" href="${deleteURL}">Delete</a>
 								</td>
 							</tr>
 						</s:iterator>
@@ -117,6 +116,5 @@
 				</table>
 			</div>
 		</s:if>
-	</div>
 </body>
 </html>

@@ -12,6 +12,12 @@
 	@import "/MailToBusinessAssociates/styles/demo_page.css";
 	@import "/MailToBusinessAssociates/styles/demo_table_jui.css";
 	@import "/MailToBusinessAssociates/styles/base.css";
+
+	#cont {overflow:hidden;}
+	div#cont #main {float:left; background: silver; width:25%; padding-left: 20px}
+	div#cont #sec {float:right; width:70%; padding-right: 20px}
+	div#cont_2 #main {float:left; width:47%; padding-left: 20px}
+	div#cont_2 #sec {float:right; width:47%; padding-right: 20px}
 </style>
 <script type="text/javascript" src="/MailToBusinessAssociates/js/jquery.js"></script>
 <script type="text/javascript" src="/MailToBusinessAssociates/js/jquery.dataTables.js"></script>
@@ -37,7 +43,7 @@
 			});
 			$(event.target.parentNode).addClass('row_selected');
 		});
-		
+
 		$("#letterTemplateTable tbody").click(function(event) {
 			$(oTable2.fnSettings().aoData).each(function() {
 				$(this.nTr).removeClass('row_selected');
@@ -49,15 +55,15 @@
 		oTable = $('#letterContentTable').dataTable({
 		        "bJQueryUI": true,
 		        "sPaginationType": "full_numbers",
-		        "aaSorting": [[ 1, "asc" ]]
+		        "aaSorting": [[ 0, "asc" ]]
 		});
-		
+
 	    oTable2 = $('#letterTemplateTable').dataTable({
 	        "bJQueryUI": true,
 	        "sPaginationType": "full_numbers",
-		    "aaSorting": [[ 1, "asc" ]]
+		    "aaSorting": [[ 0, "asc" ]]
 	    });
-	    
+
 	    oTable3 = $('#mailTypeTable').dataTable({
 	        "bJQueryUI": true,
 	        "sPaginationType": "full_numbers"
@@ -80,111 +86,112 @@
 </script>
 </head>
 <body>
-	<div>
-		<h2>Mail Type Form</h2>
-		<br>
-		<s:form action="validateMailType" namespace="/Application">
-			<sj:textfield name="name" key="label.name" value="%{#session.modelMailType.name}" />
-			<sj:textfield name="letterContentName" key="label.template_name" value="%{#session.modelMailType.letterContent.name}" />
-			<sj:textfield name="letterTemplateName" key="label.image_name" value="%{#session.modelMailType.letterTemplate.name}" />
-			<s:submit key="label.submit" name="submit" />
-			<s:submit action="main" key="label.close" name="close" onclick="form.onsubmit=null" />
-		</s:form>
+	<div id="cont">
+		<div id="main">
+			<h2>Mail Type Form</h2>
+			<br>
+			<s:form action="validateMailType" namespace="/Application">
+				<sj:textfield name="name" key="label.name" value="%{#session.modelMailType.name}" />
+				<sj:textfield name="letterContentName" key="label.template_name" value="%{#session.modelMailType.letterContent.name}" />
+				<sj:textfield name="letterTemplateName" key="label.image_name" value="%{#session.modelMailType.letterTemplate.name}" />
+				<s:submit key="label.submit" name="submit" />
+				<s:submit action="main" key="label.close" name="close" onclick="form.onsubmit=null" />
+			</s:form>
+		</div>
+		<div id="sec">
+			<s:if test="mailTypes.size() > 0">
+				<div id="container3">
+					<table id="mailTypeTable" class="display">
+						<thead>
+							<tr class="even">
+								<th>Name</th>
+								<th>Template</th>
+								<th>Stylesheet</th>
+								<th>Edit</th>
+								<th>Delete</th>
+							</tr>
+						</thead>
+						<tbody>
+							<s:iterator value="mailTypes" status="userStatus">
+								<tr
+									class="<s:if test="#userStatus.odd == true ">odd</s:if><s:else>even</s:else>">
+									<td><s:property value="name" /></td>
+									<td><s:property value="letterContent.name" /></td>
+									<td><s:property value="letterTemplate.name" /></td>
+									<td>
+										<s:url id="editURL" action="editMailType">
+											<s:param name="id" value="%{mailTypeId}" />
+										</s:url>
+										<a id="edit-button" href="${editURL}">Edit</a>
+									</td>
+									<td>
+										<s:url id="deleteURL" action="deleteMailType">
+											<s:param name="id" value="%{mailTypeId}" />
+										</s:url>
+										<a id="delete-button" href="${deleteURL}">Delete</a>
+									</td>
+								</tr>
+							</s:iterator>
+						</tbody>
+					</table>
+				</div>
+			</s:if>
+		</div>
 	</div>
 	<br>
-	<a class="button" href="javascript:void(0);" onclick="childOpen('content/add_letter_content.jsp');">Add a new text template</a>
-	<br>
-	<s:if test="letterContents.size() > 0">
-		<br>
-		<div id="container1">
-			<table id="letterContentTable" class="display">
-				<thead>
-					<tr class="even">
-						<th>
-						<th>Name</th>
-						<th>Template</th>
-					</tr>
-				</thead>
-				<tbody>
-					<s:iterator value="letterContents" status="userStatus">
-						<tr class="<s:if test="#userStatus.odd == true">odd</s:if><s:else>even</s:else>">
-							<td><input type="checkbox" /></td>
-							<td><s:property value="name" /></td>
-							<td><s:property value="content" /></td>
-						</tr>
-					</s:iterator>
-				</tbody>
-			</table>
+	<div id="cont_2">
+		<div id="main">
+			<s:if test="letterContents.size() > 0">
+				<div id="container1">
+					<table id="letterContentTable" class="display">
+						<thead>
+							<tr class="even">
+								<th>Name</th>
+								<th>Template</th>
+							</tr>
+						</thead>
+						<tbody>
+							<s:iterator value="letterContents" status="userStatus">
+								<tr class="<s:if test="#userStatus.odd == true">odd</s:if><s:else>even</s:else>">
+									<td><s:property value="name" /></td>
+									<td><s:property value="content" /></td>
+								</tr>
+							</s:iterator>
+						</tbody>
+					</table>
+				</div>
+			</s:if>
+			<br>
+			<a class="button" href="javascript:void(0);" onclick="childOpen('content/add_letter_content.jsp');">Add a new text template</a>
 		</div>
-	</s:if>
-	<br>
-	<a class="button" href="javascript:void(0);" onclick="childOpen('content/add_letter_template.jsp');">Add a new stylesheet image</a>
-	<br>
-	<s:if test="letterTemplates.size() > 0">
-		<br>
-		<div id="container2">
-			<table id="letterTemplateTable" class="display">
-				<thead>
-					<tr class="even">
-						<th>
-						<th>Name</th>
-						<th>Image</th>
-					</tr>
-				</thead>
-				<tbody>
-					<s:iterator value="letterTemplates" status="userStatus">
-						<tr class="<s:if test="#userStatus.odd == true">odd</s:if><s:else>even</s:else>">
-							<td><input type="checkbox" /></td>
-							<td><s:property value="name" /></td>
-							<td>
-							<s:property value="letterTemplateId" />
-							<img src='<s:url action="getDynamicImage">
-    													<s:param name="letterTemplateId" value="letterTemplateId"></s:param>
-													</s:url>'>
-							</td>
-						</tr>
-					</s:iterator>
-				</tbody>
-			</table>
+		<div id="sec">
+			<s:if test="letterTemplates.size() > 0">
+				<div id="container2">
+					<table id="letterTemplateTable" class="display">
+						<thead>
+							<tr class="even">
+								<th>Name</th>
+								<th>Image</th>
+							</tr>
+						</thead>
+						<tbody>
+							<s:iterator value="letterTemplates" status="userStatus">
+								<tr class="<s:if test="#userStatus.odd == true">odd</s:if><s:else>even</s:else>">
+									<td><s:property value="name" /></td>
+									<td><img src='<s:url action="getDynamicImage">
+		    									<s:param name="id" value="%{letterTemplateId}"></s:param>
+											</s:url>'>
+									</td>
+								</tr>
+							</s:iterator>
+						</tbody>
+					</table>
+				</div>
+				<br>
+				<a class="button" href="javascript:void(0);" onclick="childOpen('content/add_letter_template.jsp');">Add a new stylesheet image</a>
+			</s:if>
+			<br>
 		</div>
-	</s:if>
-	<br>
-	<s:if test="mailTypes.size() > 0">
-		<div>
-			<table id="mailTypeTable" class="display">
-				<thead>
-					<tr class="even">
-						<th>Name</th>
-						<th>Template</th>
-						<th>Stylesheet</th>
-						<td>
-						<td>
-					</tr>
-				</thead>
-				<tbody>
-					<s:iterator value="mailTypes" status="userStatus">
-						<tr
-							class="<s:if test="#userStatus.odd == true ">odd</s:if><s:else>even</s:else>">
-							<td><s:property value="name" /></td>
-							<td><s:property value="letterContent.name" /></td>
-							<td><s:property value="letterTemplate.name" /></td>
-							<td>
-								<s:url id="editURL" action="editMailType">
-									<s:param name="id" value="%{mailTypeId}" />
-								</s:url>
-								<a class="button" href="${editURL}">Edit</a>
-							</td>
-							<td>
-								<s:url id="deleteURL" action="deleteMailType">
-									<s:param name="id" value="%{mailTypeId}" />
-								</s:url> 
-								<a class="button" href="${deleteURL}">Delete</a>
-							</td>
-						</tr>
-					</s:iterator>
-				</tbody>
-			</table>
-		</div>
-	</s:if>
+	</div>
 </body>
 </html>

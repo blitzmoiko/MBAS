@@ -25,15 +25,16 @@
 	}
 
 	$(document).ready(function() {
-	    oTable = $('#clientTable').dataTable({
+	    $('#clientTable').dataTable({
 	        "bJQueryUI": true,
 	        "sPaginationType": "full_numbers"
+	    });
 	});
 
 </script>
 </head>
 <body>
-	<div>
+	<div id="div1">
 		<h2>Client Form</h2>
 		<br>
 		<s:actionerror />
@@ -42,16 +43,16 @@
 			<s:textfield name="firstName" key="label.first_name" required="true" value="%{#session.modelClient.firstName}" />
 			<s:textfield name="lastName" key="label.last_name" required="true" value="%{#session.modelClient.lastName}" />
 			<s:textfield name="username" key="label.username" required="true" value="%{#session.modelClient.username}" />
-			
-			<!-- Test password exists for client  -->		
+
+			<!-- Test password exists for client  -->
 			<s:if test="client.clientId != null">
 				<s:password name="password" key="label.password" required="true" value="••••••••"  showPassword="true" disabled="true" />
-<!-- 				<input type="button" value="Change Password" onclick="javascript:childOpen('content/change_password.jsp')" /> -->		
+<!-- 				<input type="button" value="Change Password" onclick="javascript:childOpen('content/change_password.jsp')" /> -->
 			</s:if>
 			<s:else>
 				<s:password name="password" key="label.password" required="true" />
 			</s:else>
-			
+
 			<s:if test="#session.client.zuper == true">
 				<s:checkbox name="active" key="label.active" value="%{#session.modelClient.active}" />
 				<div id="privilege">
@@ -60,10 +61,10 @@
 					<s:checkbox id="updateId" name="update" key="label.update" value="%{#session.modelClient.clientPrivilege.update}" />
 					<s:checkbox id="deleteId" name="delete" key="label.delete" value="%{#session.modelClient.clientPrivilege.delete}" />
 					<%-- <s:submit type="button" key="label.copy_privileges" onClick="childOpen('listClientPrivilege.action')" /> --%>
-					<input type="button" value="Copy Privileges" onClick="childOpen('listClientPrivilege.action')" /> 
+					<input type="button" value="Copy Privileges" onClick="childOpen('listClientPrivilege.action')" />
 				</div>
 			</s:if>
-	
+
 			<s:submit key="label.submit" name="submit" />
 			<s:submit action="main" key="label.close" name="close" onclick="form.onsubmit=null" />
 		</s:form>
@@ -77,8 +78,8 @@
 						<th>Name</th>
 						<th>Username</th>
 						<th>Password</th>
-						<th>
-						<th>
+						<th>Edit</th>
+						<th>Delete</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -92,13 +93,13 @@
 								<s:url id="editURL" action="editClient">
 									<s:param name="id" value="%{clientId}" />
 								</s:url>
-								<a class="button" href="${editURL}">Edit</a>
+								<a id="edit-button" href="${editURL}">Edit</a>
 							</td>
 							<td>
 								<s:url id="deleteURL" action="deleteClient">
 									<s:param name="id" value="%{clientId}" />
-								</s:url> 
-								<a class="button" href="${deleteURL}">Delete</a>
+								</s:url>
+								<a id="delete-button" href="${deleteURL}">Delete</a>
 							</td>
 						</tr>
 					</s:iterator>

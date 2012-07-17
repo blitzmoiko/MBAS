@@ -16,9 +16,9 @@
 <script type="text/javascript" src="/MailToBusinessAssociates/js/jquery.dataTables.js"></script>
 </head>
 <body>
-	<s:form action="validateLetterContent" namespace="/Application" enctype="multipart/form-data">
+	<s:form action="validateLetterContent" namespace="/Application" method="POST">
 		<s:textfield name="name" key="label.name" />
-		<s:textarea name="letterContentContent" />
+		<s:textarea name="content" key="label.message" />
 		<s:submit name="save" key="label.save" />
 		<s:submit name="close" key="label.close" onclick="self.close()"/>
 	</s:form>

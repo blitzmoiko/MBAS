@@ -16,7 +16,7 @@
 <script type="text/javascript" src="/MailToBusinessAssociates/js/jquery.dataTables.js"></script>
 </head>
 <body>
-	<s:form action="validateLetterTemplate" namespace="/Application" enctype="multipart/form-data">
+	<s:form action="validateLetterTemplate" namespace="/Application" method="POST" enctype="multipart/form-data">
 		<s:textfield name="name" key="label.name" />
 		<s:file name="templateImage" key="label.image_name"/>
 		<s:submit name="save" key="label.save" />

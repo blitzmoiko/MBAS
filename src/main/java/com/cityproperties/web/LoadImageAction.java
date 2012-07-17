@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
@@ -15,32 +16,33 @@ import com.cityproperties.dao.LetterTemplateDAO;
 import com.cityproperties.domain.LetterTemplate;
 import com.opensymphony.xwork2.ActionSupport;
 
-public class LoadImageAction 
-		extends ActionSupport 
+public class LoadImageAction
+		extends ActionSupport
 		implements SessionAware {
 
 	// Fields
 	private Long letterTemplateId;
-	
+
 	// Session
 	private Map<String, Object> session;
 	private LetterTemplate letterTemplate;
 	private List<LetterTemplate> letterTemplates;
-	
+
 	// DI via Spring
 	private LetterTemplateDAO letterTemplateDao;
-	
+
 	public String execute() {
+		HttpServletRequest request = null;
 		HttpServletResponse response = null;
 		ServletOutputStream out = null;
-		
-		letterTemplate = letterTemplateDao.find(letterTemplateId);
-		
+
 		try {
+			request = ServletActionContext.getRequest();
 			response = ServletActionContext.getResponse();
+			letterTemplate = letterTemplateDao.find(Long.parseLong(request.getParameter("id")));
 			response.setContentType(letterTemplate.getContentType());
 			out = response.getOutputStream();
-			out.write(letterTemplate.getTemplate());
+			out.write(letterTemplate.getThumbnail());
 			out.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -54,10 +56,10 @@ public class LoadImageAction
 					e.printStackTrace();
 				}
 		}
-		
+
 		return NONE;
 	}
-	
+
 	public LetterTemplate getLetterTemplate() {
 		return letterTemplate;
 	}

@@ -8,7 +8,6 @@ import org.apache.struts2.ServletActionContext;
 
 import com.cityproperties.dao.MailTypeDAO;
 import com.cityproperties.domain.MailType;
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class MailTypeAction extends ActionSupport {
@@ -47,7 +46,7 @@ public class MailTypeAction extends ActionSupport {
 	 * @return String
 	 */
 	public String delete() {
-		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
+		HttpServletRequest request = ServletActionContext.getRequest();
 		mailType = mailTypeDao.find(Long.parseLong(request.getParameter("id")));
 		mailTypeDao.remove(mailType);
 		return SUCCESS;
@@ -57,9 +56,8 @@ public class MailTypeAction extends ActionSupport {
 	 * To delete a mail type.
 	 * @return String
 	 */
-	public String edit()
-	{
-		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
+	public String edit() {
+		HttpServletRequest request = ServletActionContext.getRequest();
 		mailType = mailTypeDao.find(Long.parseLong(request.getParameter("id")));
 		return SUCCESS;
 	}

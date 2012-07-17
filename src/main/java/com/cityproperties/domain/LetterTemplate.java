@@ -17,9 +17,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "C_LETTER_TEMPLATE")
-public class LetterTemplate 
+public class LetterTemplate
 		implements Serializable, Comparable<LetterTemplate> {
-	
+
 	@Id
 	@SequenceGenerator(name = "ltSeq", sequenceName = "LETTER_TEMPLATE_SEQUENCE", allocationSize = 1, initialValue = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ltSeq")
@@ -32,7 +32,11 @@ public class LetterTemplate
 	@Column(name = "TEMPLATE")
 	@Lob
 	private byte[] template;
-	
+
+	@Column(name = "TEMPLATE_THUMB")
+	@Lob
+	private byte[] thumbnail;
+
 	@Column(name = "CONTENT_TYPE")
 	private String contentType;
 
@@ -42,26 +46,28 @@ public class LetterTemplate
 	public LetterTemplate() {/* Default constructor for hibernate */
 	}
 
-	public LetterTemplate(Long letterTemplateId, String name, byte[] template, String contentType) {
+	public LetterTemplate(Long letterTemplateId, String name, byte[] template,  byte[] thumbnail, String contentType) {
 		this.letterTemplateId = letterTemplateId;
 		this.name = name;
 		this.template = template;
+		this.thumbnail = thumbnail;
 		this.contentType = contentType;
 	}
 
-	public LetterTemplate(Long letterTemplateId, String name, byte[] template, String contentType,
+	public LetterTemplate(Long letterTemplateId, String name, byte[] template, byte[] thumbnail, String contentType,
 			Set<MailType> mailTypes) {
 		this.letterTemplateId = letterTemplateId;
 		this.name = name;
 		this.template = template;
+		this.thumbnail = thumbnail;
 		this.contentType = contentType;
 		this.mailTypes = mailTypes;
 	}
-	
+
 	public int compareTo(LetterTemplate o) {
 		 return name.compareTo(o.name);
 	}
-	
+
 	public Long getLetterTemplateId() {
 		return letterTemplateId;
 	}
@@ -85,7 +91,15 @@ public class LetterTemplate
 	public void setTemplate(byte[] template) {
 		this.template = template;
 	}
-	
+
+	public byte[] getThumbnail() {
+		return thumbnail;
+	}
+
+	public void setThumbnail(byte[] thumbnail) {
+		this.thumbnail = thumbnail;
+	}
+
 	public String getContentType() {
 		return contentType;
 	}

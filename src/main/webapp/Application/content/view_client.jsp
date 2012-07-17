@@ -21,7 +21,7 @@
         window.close();
         return false;
     }
-    
+
 	$(document).ready(function() {
 		 oTable = $('#clientTable').dataTable({
 		        "bJQueryUI": true,
@@ -39,7 +39,7 @@
 				<thead>
 					<tr class="even">
 						<th>Name</th>
-						<th>
+						<th>Submit</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -50,7 +50,7 @@
 								<s:hidden id="name%{clientId}" value="%{firstName} %{lastName}" />
 								<s:hidden id="clientNo%{clientId}" value="%{clientId}"/>
 							</td>
-							<td><input type="button" value="Submit Client" onclick="javascript:return regToClient(${clientId});" /></td>
+							<td><a id="ok-button" href="javascript:void(0)" onclick="javascript:return regToClient(${clientId});">Submit Client</a></td>
 						</tr>
 					</s:iterator>
 				</tbody>

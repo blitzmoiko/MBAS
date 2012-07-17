@@ -23,7 +23,7 @@
         window.close();
         return false;
     }
-    
+
 	$(document).ready(function() {
 	    oTable = $('#clientPrivilegeTable').dataTable({
 	        "bJQueryUI": true,
@@ -46,7 +46,7 @@
 						<th>Insert</th>
 						<th>Update</th>
 						<th>Delete</th>
-						<th>
+						<th>Copy</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -58,7 +58,7 @@
 							<td><input id="insert${clientId}" type="checkbox" disabled="disabled"  ${insert ? 'checked' : ''} /></td>
 							<td><input id="update${clientId}" type="checkbox" disabled="disabled" ${update ? 'checked' : ''} /></td>
 							<td><input id="delete${clientId}" type="checkbox" disabled="disabled" ${delete ? 'checked' : ''} /></td>
-							<td><s:a id="button" onclick="javascript:return copyPrivilegeToClient(%{clientId});">Copy</s:a></td>
+							<td><a id="copy-button" href="javascript:void(0)" onclick="javascript:return copyPrivilegeToClient(${clientId});">Copy</a></td>
 						</tr>
 					</s:iterator>
 				</tbody>

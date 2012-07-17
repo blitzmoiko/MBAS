@@ -1,11 +1,19 @@
 package com.cityproperties.web;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
+
 import org.apache.struts2.interceptor.SessionAware;
+import org.imgscalr.Scalr;
+import org.imgscalr.Scalr.Method;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.FileCopyUtils;
 
 import com.cityproperties.dao.LetterTemplateDAO;
 import com.cityproperties.domain.LetterTemplate;
@@ -14,8 +22,8 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 
-public class LetterTemplateValidateAction 
-		extends ActionSupport 
+public class LetterTemplateValidateAction
+		extends ActionSupport
 		implements SessionAware, Preparable {
 
 	// Fields
@@ -24,16 +32,17 @@ public class LetterTemplateValidateAction
 	private File templateImage;
 	private String templateImageContentType;
 	private byte[] template;
+	private byte[] thumbnail;
 	private String contentType;
-	
+
 	// Session
 	private Map<String, Object> session;
 	private LetterTemplate letterTemplate;
 	private List<LetterTemplate> letterTemplates;
-	
+
 	// DI via Spring
 	private LetterTemplateDAO letterTemplateDao;
-	
+
 	@SuppressWarnings("unchecked")
 	public void prepare() throws Exception {
 		if (session.containsKey(Constants.MODEL_LETTER_TEMPLATE) ) {
@@ -43,10 +52,10 @@ public class LetterTemplateValidateAction
 			setTemplate(letterTemplate.getTemplate());
 			setContentType(letterTemplate.getContentType());
 		}
-		
+
 		if (session.containsKey(Constants.LETTER_TEMPLATES)) {
-			letterTemplates = (List<LetterTemplate>) session.get(Constants.LETTER_TEMPLATES);		
-		}  
+			letterTemplates = (List<LetterTemplate>) session.get(Constants.LETTER_TEMPLATES);
+		}
 	}
 
 	public String execute() {
@@ -55,13 +64,12 @@ public class LetterTemplateValidateAction
 		} else {
 			letterTemplate = new LetterTemplate();
 		}
-		
+
 		try {
 			if (templateImage != null) {
 				letterTemplate.setName(name);
-				byte[] fileArray = org.springframework.util.FileCopyUtils
-						.copyToByteArray(templateImage);
-				letterTemplate.setTemplate(fileArray);
+				letterTemplate.setTemplate(FileCopyUtils.copyToByteArray(templateImage));
+				letterTemplate.setThumbnail(createThumbnail(templateImage));
 				letterTemplate.setContentType(templateImageContentType);
 			}
 		} catch (Exception e) {
@@ -69,12 +77,22 @@ public class LetterTemplateValidateAction
             addActionError(e.getMessage());
             return INPUT;
         }
-		
+
 		session.put(Constants.MODEL_LETTER_TEMPLATE, letterTemplate);
-		
+
 		return SUCCESS;
 	}
-	
+
+	private byte[] createThumbnail(File image) throws IOException {
+		BufferedImage img = ImageIO.read(templateImage);
+		BufferedImage scaledImg = Scalr.resize(img, Method.QUALITY, 120, 80, Scalr.OP_ANTIALIAS);
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ImageIO.write(scaledImg, "jpg", baos);
+		baos.flush();
+
+		return baos.toByteArray();
+	}
+
 	public Long getLetterTemplateId() {
 		return letterTemplateId;
 	}
@@ -82,7 +100,7 @@ public class LetterTemplateValidateAction
 	public void setLetterTemplateId(Long letterTemplateId) {
 		this.letterTemplateId = letterTemplateId;
 	}
-	
+
 	@RequiredStringValidator(message="Name is required.")
 	public String getName() {
 		return name;
@@ -91,13 +109,21 @@ public class LetterTemplateValidateAction
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public byte[] getTemplate() {
 		return template;
 	}
 
 	public void setTemplate(byte[] template) {
 		this.template = template;
+	}
+
+	public byte[] getThumbnail() {
+		return thumbnail;
+	}
+
+	public void setThumbnail(byte[] thumbnail) {
+		this.thumbnail = thumbnail;
 	}
 
 	public String getContentType() {
