@@ -4,192 +4,200 @@
     "http://struts.apache.org/dtds/struts-2.0.dtd">
 
 <struts>
-	<package name="default" namespace="/Application" extends="struts-default, json-default">
+    <package name="default" namespace="/Application" extends="struts-default">
 
-	<!-- Main -->
-	<action name="main" class="com.cityproperties.web.ForwardAction">
-		<result>content/main.jsp</result>
-	</action>
+    <result-types>
+        <result-type name="tiles"
+            class="org.apache.struts2.views.tiles.TilesResult" />
+    </result-types>
 
+    <!-- Login -->
+    <action name="login">
+        <result type="tiles">/login</result>
+    </action>
 
-	<!-- Login -->
-	<action name="login" class="com.cityproperties.web.LoginAction">
-		<result name="input">content/login.jsp</result>
-		<result type="redirect">main.action</result>
-	</action>
+    <!-- Main -->
+    <action name="main" class="com.cityproperties.web.ForwardAction">
+        <result type="tiles">/home</result>
+    </action>
 
+    <!-- Change Password -->
+    <action name="changePassword">
+        <result type="tiles">/changePassword</result>
+    </action>
 
-	<!-- Change Password -->
-	<action name="changePassword" class="com.cityproperties.web.ChangePasswordAction">
-		<result name="input">content/change_password.jsp</result>
-		<result type="redirect">main.action</result>
-	</action>
-
-
-	<!-- Client -->
-	<action name="listClient" method="list"
-		class="com.cityproperties.web.ClientAction">
-		<result>content/manage_client.jsp</result>
-	</action>
-
-	<action name="validateClient"
-		class="com.cityproperties.web.ClientValidateAction">
-		<result name="input">content/manage_client.jsp</result>
-		<result type="redirect">saveOrUpdateClient.action</result>
-	</action>
-
-	<action name="saveOrUpdateClient" method="saveOrUpdate"
-		class="com.cityproperties.web.ClientAction">
-		<result type="redirect">listClient.action</result>
-	</action>
-
-	<action name="editClient" method="edit"
-		class="com.cityproperties.web.ClientAction">
-		<result>content/manage_client.jsp?client=${client}</result>
-	</action>
-
-	<action name="deleteClient" method="delete"
-		class="com.cityproperties.web.ClientAction">
-		<result type="redirect">listClient.action</result>
-	</action>
-
-	<action name="viewClient" method="list"
-		class="com.cityproperties.web.ClientAction">
-		<result>content/view_client.jsp</result>
-	</action>
+    <action name="validatePassword" class="com.cityproperties.web.ChangePasswordAction">
+        <result name="input" type="tiles">/changePassword</result>
+        <result type="redirect">main.action</result>
+    </action>
 
 
-	<!-- Client Privilege -->
-	<action name="listClientPrivilege" method="list"
-		class="com.cityproperties.web.ClientPrivilegeAction">
-		<result>content/view_client_privilege.jsp</result>
-	</action>
+    <!-- Client -->
+    <action name="listClient" method="list"
+        class="com.cityproperties.web.ClientAction">
+        <result type="tiles">/client</result>
+    </action>
+
+    <action name="validateClient"
+        class="com.cityproperties.web.ClientValidateAction">
+        <result name="input" type="tiles">/client</result>
+        <result type="redirect">saveOrUpdateClient.action</result>
+    </action>
+
+    <action name="saveOrUpdateClient" method="saveOrUpdate"
+        class="com.cityproperties.web.ClientAction">
+        <result type="redirect">listClient.action</result>
+    </action>
+
+    <action name="editClient" method="edit"
+        class="com.cityproperties.web.ClientAction">
+        <result type="tiles">/client</result>
+    </action>
+
+    <action name="deleteClient" method="delete"
+        class="com.cityproperties.web.ClientAction">
+        <result type="redirect">listClient.action</result>
+    </action>
+
+    <action name="viewClient" method="list"
+        class="com.cityproperties.web.ClientAction">
+        <result type="tiles">/viewClient</result>
+    </action>
 
 
-	<!-- Business Associate -->
-	<action name="listBA" method="list"
-		class="com.cityproperties.web.BusinessAssociateAction">
-		<result>content/manage_ba.jsp</result>
-	</action>
+    <!-- Client Privilege -->
+    <action name="listClientPrivilege" method="list"
+        class="com.cityproperties.web.ClientPrivilegeAction">
+        <result type="tiles">/viewClientPrivilege</result>
+    </action>
 
-	<action name="validateBA"
-		class="com.cityproperties.web.BusinessAssociateValidateAction">
-		<result name="input">content/manage_ba.jsp</result>
-		<result type="redirect">saveOrUpdateBA.action</result>
-	</action>
 
-	<action name="saveOrUpdateBA" method="saveOrUpdate"
-		class="com.cityproperties.web.BusinessAssociateAction">
-		<result type="redirect">listBA.action</result>
-	</action>
+    <!-- Business Associate -->
+    <action name="listBA" method="list"
+        class="com.cityproperties.web.BusinessAssociateAction">
+        <result type="tiles">/businessAssociate</result>
+    </action>
 
-	<action name="editBA" method="edit"
-		class="com.cityproperties.web.BusinessAssociateAction">
-		<result>content/manage_ba.jsp?businessAssociate=${businessAssociate}</result>
-	</action>
+    <action name="validateBA"
+        class="com.cityproperties.web.BusinessAssociateValidateAction">
+        <result name="input" type="tiles">/businessAssociate</result>
+        <result type="redirect">saveOrUpdateBA.action</result>
+    </action>
 
-	<action name="deleteBA" method="delete"
-		class="com.cityproperties.web.BusinessAssociateAction">
-		<result type="redirect">listBA.action</result>
-	</action>
+    <action name="saveOrUpdateBA" method="saveOrUpdate"
+        class="com.cityproperties.web.BusinessAssociateAction">
+        <result type="redirect">listBA.action</result>
+    </action>
 
-	<!-- Send Mail -->
-	<action name="sendMail" class="com.cityproperties.web.SendMailAction">
-		<result name="input">content/send_mail.jsp</result>
-		<result>main.action</result>
-	</action>
+    <action name="editBA" method="edit"
+        class="com.cityproperties.web.BusinessAssociateAction">
+        <result type="tiles">/businessAssociate</result>
+    </action>
 
-	<!-- Mail Type -->
-	<action name="listMailType" method="list"
-		class="com.cityproperties.web.MailTypeAction">
-		<result>content/manage_mail_type.jsp</result>
-	</action>
+    <action name="deleteBA" method="delete"
+        class="com.cityproperties.web.BusinessAssociateAction">
+        <result type="redirect">listBA.action</result>
+    </action>
 
-	<action name="validateMailType"
-		class="com.cityproperties.web.ClientValidateAction">
-		<result name="input">content/manage_mail_type.jsp</result>
-		<result type="redirect">saveOrUpdateClient.action</result>
-	</action>
+    <!-- Send Mail -->
+    <action name="sendMail">
+        <result type="tiles">/sendMail</result>
+    </action>
 
-	<action name="saveOrUpdateMailType" method="saveOrUpdate"
-		class="com.cityproperties.web.MailTypeAction">
-		<result type="redirect">listMailType.action</result>
-	</action>
+    <action name="validateMail" class="com.cityproperties.web.SendMailAction">
+        <result name="input" type="tiles">/sendMail</result>
+        <result type="redirect">main.action</result>
+    </action>
 
-	<action name="editMailType" method="edit"
-		class="com.cityproperties.web.MailTypeAction">
-		<result>content/manage_mail_type.jsp?mailType=${mailType}</result>
-	</action>
+    <!-- Mail Type -->
+    <action name="listMailType" method="list"
+        class="com.cityproperties.web.MailTypeAction">
+        <result type="tiles">/mailType</result>
+    </action>
 
-	<action name="deleteMailType" method="delete"
-		class="com.cityproperties.web.MailTypeAction">
-		<result type="redirect">listMailType.action</result>
-	</action>
+    <action name="validateMailType"
+        class="com.cityproperties.web.ClientValidateAction">
+        <result name="input" type="tiles">/mailType</result>
+        <result type="redirect">saveOrUpdateClient.action</result>
+    </action>
 
-	<!-- Letter Content -->
-	<action name="listLetterContent" method="list"
-		class="com.cityproperties.web.LetterContentAction">
-		<result>content/manage_mail_type.jsp</result>
-	</action>
+    <action name="saveOrUpdateMailType" method="saveOrUpdate"
+        class="com.cityproperties.web.MailTypeAction">
+        <result type="redirect">listMailType.action</result>
+    </action>
 
-	<action name="validateLetterContent"
-		class="com.cityproperties.web.LetterContentValidateAction">
-		<result name="input">content/add_letter_content.jsp</result>
-		<result type="redirect">saveOrUpdateLetterContent.action</result>
-	</action>
+    <action name="editMailType" method="edit"
+        class="com.cityproperties.web.MailTypeAction">
+        <result type="tiles">/mailType</result>
+    </action>
 
-	<action name="saveOrUpdateLetterContent" method="saveOrUpdate"
-		class="com.cityproperties.web.LetterContentAction">
-		<result>content/close_page.jsp</result>
-	</action>
+    <action name="deleteMailType" method="delete"
+        class="com.cityproperties.web.MailTypeAction">
+        <result type="redirect">listMailType.action</result>
+    </action>
 
-	<action name="editLetterContent" method="edit"
-		class="com.cityproperties.web.LetterContentAction">
-		<result>content/add_letter_content.jsp?letterContent=${letterContent}</result>
-	</action>
+    <!-- Mail Type Tables -->
+    <action name="tableMailType"
+        class="com.cityproperties.web.MailTypeMultiTableAction">
+        <result type="tiles">/mailType</result>
+    </action>
 
-	<action name="deleteLetterContent" method="delete"
-		class="com.cityproperties.web.LetterContentAction">
-		<result type="redirect">tableMailType.action</result>
-	</action>
+    <!-- Letter Content -->
+    <action name="letterContent">
+        <result type="tiles">/letterContent</result>
+    </action>
 
-	<!-- Letter Template -->
-	<action name="listLetterTemplate" method="list"
-		class="com.cityproperties.web.LetterTemplateAction">
-		<result>content/manage_mail_type.jsp</result>
-	</action>
+    <action name="validateLetterContent"
+        class="com.cityproperties.web.LetterContentValidateAction">
+        <result name="input" type="tiles">/letterContent</result>
+        <result type="redirect">saveOrUpdateLetterContent.action</result>
+    </action>
 
-	<action name="validateLetterTemplate"
-		class="com.cityproperties.web.LetterTemplateValidateAction">
-		<result name="input">content/add_letter_template.jsp</result>
-		<result type="redirect">saveOrUpdateLetterTemplate.action</result>
-	</action>
+    <action name="saveOrUpdateLetterContent" method="saveOrUpdate"
+        class="com.cityproperties.web.LetterContentAction">
+        <result type="tiles">/close</result>
+    </action>
 
-	<action name="saveOrUpdateLetterTemplate" method="saveOrUpdate"
-		class="com.cityproperties.web.LetterTemplateAction">
-		<result>content/close_page.jsp</result>
-	</action>
+    <action name="editLetterContent" method="edit"
+        class="com.cityproperties.web.LetterContentAction">
+        <result type="tiles">/letterContent</result>
+    </action>
 
-	<action name="editLetterTemplate" method="edit"
-		class="com.cityproperties.web.MailTypeAction">
-		<result>content/add_letter_template.jsp?letterTemplate=${letterTemplate}</result>
-	</action>
+    <action name="deleteLetterContent" method="delete"
+        class="com.cityproperties.web.LetterContentAction">
+        <result type="redirect">tableMailType.action</result>
+    </action>
 
-	<action name="deleteLetterTemplate" method="delete"
-		class="com.cityproperties.web.MailTypeAction">
-		<result type="redirect">tableMailType.action</result>
-	</action>
+    <!-- Letter Template -->
+    <action name="letterTemplate">
+        <result type="tiles">/letterTemplate</result>
+    </action>
 
-	<action name="getDynamicImage"
-		class="com.cityproperties.web.LoadImageAction">
-	</action>
+    <action name="validateLetterTemplate"
+        class="com.cityproperties.web.LetterTemplateValidateAction">
+        <result name="input" type="tiles">/letterTemplate</result>
+        <result type="redirect">saveOrUpdateLetterTemplate.action</result>
+    </action>
 
-	<!-- Mail Type Tables -->
-	<action name="tableMailType"
-		class="com.cityproperties.web.MailTypeMultiTableAction">
-		<result>content/manage_mail_type.jsp</result>
-	</action>
+    <action name="saveOrUpdateLetterTemplate" method="saveOrUpdate"
+        class="com.cityproperties.web.LetterTemplateAction">
+        <result type="tiles">/close</result>
+    </action>
 
-	</package>
+    <action name="editLetterTemplate" method="edit"
+        class="com.cityproperties.web.MailTypeAction">
+        <result type="tiles">/letterTemplate</result>
+    </action>
+
+    <action name="deleteLetterTemplate" method="delete"
+        class="com.cityproperties.web.MailTypeAction">
+        <result type="redirect">tableMailType.action</result>
+    </action>
+
+    <action name="getDynamicImage"
+        class="com.cityproperties.web.LoadImageAction">
+    </action>
+
+    </package>
 
 </struts>

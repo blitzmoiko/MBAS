@@ -1,163 +1,365 @@
-	body {
-		background: #EEE;
-		padding: 10px 0;
-		font-family: verdana, arial, sans-serif;
-	}
+body {
+    background: #EEE;
+    font-family: helvetica, arial, sans-serif;
+    height: 100%;
+}
 
-	* {
-		margin: 0;
-		padding: 0;
-	}
+* {
+    margin: 0;
+    padding: 0;
+}
 
-	label.label {
-		font-size: .9em;
-		font-family: verdana, arial, sans-serif;
-	}
+label.label {
+    font-size: .9em;
+    font-family: verdana, arial, sans-serif;
+}
 
-	table.display {
-		width: 100%;
-	}
+table.body {
+    width: 100%;
+}
 
-	tr td.tdLabel {
-		font-size: 1em;
-		text-align: left;
-		padding: 1px 5px;
-	}
+table.display {
+    width: 100%;
+}
 
-	tr td {
-		font-size: .7em;
-	}
+tr td.tdLabel {
+    font-size: 1em;
+    text-align: left;
+    padding: 1px 5px;
+}
 
-	th {
-		font-size: .9em;
-	}
+th {
+    font-size: .9em;
+}
 
-	h2 {
-		font-size: 1.5em;
-	}
+h2 {
+    font-size: 1.5em;
+}
 
-	#edit-button {
-		background-image:url(/MailToBusinessAssociates/images/edit.png);
-		display: block;
-		text-indent: -9999px;
-		height: 14px;
-		width: 14px;
-	}
+#container {
+    width: 100%;
+    height:100%;
+    height: 0 auto !important;
+    min-height: 100%;
+    position:relative;
+}
 
-	#delete-button {
-		background-image:url(/MailToBusinessAssociates/images/delete.png);
-		display: block;
-		text-indent: -9999px;
-		height: 14px;
-		width: 14px;
-	}
+#header {
+    position: relative;
+    height: 70px;
+    margin-bottom: 10px;
+}
 
-	#ok-button {
-		background-image:url(/MailToBusinessAssociates/images/ok.png);
-		display: block;
-		text-indent: -9999px;
-		height: 14px;
-		width: 12px;
-	}
+#header div#box {
+    background-color: #BDD2FF;
+    height: 80px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 173px;
+}
 
-	#copy-button {
-		background-image:url(/MailToBusinessAssociates/images/copy.png);
-		display: block;
-		text-indent: -9999px;
-		height: 14px;
-		width: 14px;
-	}
+#header div#title{
+    padding-left: 182px;
+    padding-top: 5px;
+}
 
-	select {
-		font-size: .9em;
-	}
+#header img#customlogo {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
 
-	input[type="text"] {
-		font-size: 1.2em;
-		font-family: verdana, arial, sans-serif;
-	}
+#header div#clock {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding-top: 10px;
+    padding-right: 10px;
+    text-align: right;
+    font-size: 10px;
+    font-weight: bold;
+}
 
-	a.button, a#button {
-	    background-color:#DDD;
-		border:1px solid #AAA;
-		border-bottom-left-radius:5px;
-		border-bottom-right-radius:5px;
-		border-top-left-radius:5px;
-		border-top-right-radius:5px;
-		color:#333333 !important;
-		cursor:pointer;
-		margin:0 3px;
-		padding:2px 5px;
-		text-decoration: none !important;
-   }
+#header div#logout {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding-bottom: 5px;
+    padding-right: 10px;
+}
 
-	a.button:hover, a#button:hover {
-		background-color: #CCC;
-		text-decoration: none !important;
-	}
+#menu {
+    background-color: #BDD2FF;
+    float: left;
+}
 
-	form#validateLetterContent textarea {
-		width: 550px;
-		height: 180px;
-	}
+#body {
+    margin-left: 150px;
+    padding: 0px 10px;
+}
 
-	.sf-menu {
-		font-size: .9em;
-		font-family: helvetica, georgia, serif;
-		font-weight: bold;
-	}
+#terminal_body #content {
+    position:fixed;
+    top: 50%;
+    left: 50%;
+    width: 28em;
+    height: 14em;
+    margin-top: -12em; /*set to a negative number 1/2 of your height*/
+    margin-left: -14em; /*set to a negative number 1/2 of your width*/
+    background-color: #f3f3f3;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+}
 
-	.dataTables_info {
-		width: inherit;
-	}
+#terminal_body h1, #terminal_body h3 {
+    padding-top: 10px;
+    padding-left: 16px;
+}
 
-	.dataTables_length, .dataTables_info, .dataTables_filter, .dataTables_paginate {
-		padding-bottom: 5px;
-		font-size: .7em;
-	}
+#terminal_body #content .wwFormTable {
+    margin-left:auto;
+    margin-right:auto;
+}
 
-	.toolbar {
-		float: left;
-	}
+#footer {
+    margin-top: 10px;
+    padding-top: 5px;
+    clear: left;
+    text-align: center;
+    font-size: .6em;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 10px;
+}
 
-	.ex_highlight #clientTable tbody tr.even:hover,#clientTable tbody tr.even td.highlighted
-		{
-		background-color: #ECFFB3;
-	}
+div#cont {
+    overflow: hidden;
+}
 
-	.ex_highlight #clientTable tbody tr.odd:hover,#clientTable tbody tr.odd td.highlighted
-		{
-		background-color: #E6FF99;
-	}
+div#cont div#main {
+    float: left;
+    padding-left: 10px;
+    width: 30%;
+}
 
-	.ex_highlight_row #clientTable tr.even:hover {
-		background-color: #ECFFB3;
-	}
+div#cont div#sec {
+    float: right;
+    padding-left: 20px;
+    width: 65%;
+}
 
-	.ex_highlight_row #clientTable tr.even:hover td.sorting_1 {
-		background-color: #DDFF75;
-	}
+div#cont_2 div#main {
+    float: left;
+    padding-left: 20px;
+}
 
-	.ex_highlight_row #clientTable tr.even:hover td.sorting_2 {
-		background-color: #E7FF9E;
-	}
+div#cont_2 div#sec {
+    float: right;
+    padding-right: 20px;
+}
 
-	.ex_highlight_row #clientTable tr.even:hover td.sorting_3 {
-		background-color: #E2FF89;
-	}
+#edit-button {
+    background-image: url(/MailToBusinessAssociates/images/edit.png);
+    display: block;
+    text-indent: -9999px;
+    height: 14px;
+    width: 14px;
+}
 
-	.ex_highlight_row #clientTable tr.odd:hover {
-		background-color: #E6FF99;
-	}
+#delete-button {
+    background-image: url(/MailToBusinessAssociates/images/delete.png);
+    display: block;
+    text-indent: -9999px;
+    height: 14px;
+    width: 14px;
+}
 
-	.ex_highlight_row #clientTable tr.odd:hover td.sorting_1 {
-		background-color: #D6FF5C;
-	}
+#ok-button {
+    background-image: url(/MailToBusinessAssociates/images/ok.png);
+    display: block;
+    text-indent: -9999px;
+    height: 14px;
+    width: 12px;
+}
 
-	.ex_highlight_row #clientTable tr.odd:hover td.sorting_2 {
-		background-color: #E0FF84;
-	}
+#copy-button {
+    background-image: url(/MailToBusinessAssociates/images/copy.png);
+    display: block;
+    text-indent: -9999px;
+    height: 14px;
+    width: 14px;
+}
 
-	.ex_highlight_row #clientTable tr.odd:hover td.sorting_3 {
-		background-color: #DBFF70;
-	}
+select {
+    font-size: .9em;
+}
+
+/* input[type="text"] {
+    font-size: .8em;
+    font-family: verdana, arial, sans-serif;
+} */
+
+input, input~label {
+    font-size: .8em;
+    font-family: verdana, arial, sans-serif;
+}
+
+a.button,a#button {
+    background-color: #DDD;
+    border: 1px solid #AAA;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    color: #333333 !important;
+    cursor: pointer;
+    margin: 0 3px;
+    padding: 2px 5px;
+    text-decoration: none !important;
+    font-size: .7em;
+}
+
+a.button:hover,a#button:hover {
+    background-color: #CCC;
+    text-decoration: none !important;
+}
+
+form#validateLetterContent textarea {
+    width: 550px;
+    height: 180px;
+}
+
+.sf-menu {
+    font-size: .9em;
+    font-family: helvetica, georgia, serif;
+    font-weight: bold;
+}
+
+.display tr td {
+    font-size: .7em;
+}
+
+/* DataTables */
+
+.dataTables_info {
+    width: inherit;
+}
+
+.dataTables_length,.dataTables_info,.dataTables_filter,.dataTables_paginate
+    {
+    padding-bottom: 5px;
+    font-size: .7em;
+}
+
+.toolbar {
+    float: left;
+}
+
+tbody tr.even:hover, tbody tr.even td.highlighted {
+    background-color: #ECFFB3;
+}
+
+tbody tr.odd:hover, tbody tr.odd td.highlighted {
+    background-color: #E6FF99;
+}
+
+tr.even:hover {
+    background-color: #ECFFB3;
+}
+
+tr.even:hover td.sorting_1 {
+    background-color: #DDFF75;
+}
+
+tr.even:hover td.sorting_2 {
+    background-color: #E7FF9E;
+}
+
+tr.even:hover td.sorting_3 {
+    background-color: #E2FF89;
+}
+
+tr.odd:hover {
+    background-color: #E6FF99;
+}
+
+tr.odd:hover td.sorting_1 {
+    background-color: #D6FF5C;
+}
+
+tr.odd:hover td.sorting_2 {
+    background-color: #E0FF84;
+}
+
+tr.odd:hover td.sorting_3 {
+    background-color: #DBFF70;
+}
+
+/* Mail Type Page */
+#tabs {
+    height: 500px;
+    float: right;
+    width: 65%;
+}
+
+#tabs.tabs-bottom {
+    position: relative;
+}
+
+#tabs.tabs-bottom .ui-tabs-panel {
+    height: 460px;
+    overflow: auto;
+}
+
+#tabs.tabs-bottom .ui-tabs-nav {
+    position: absolute !important;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    padding: 0 0.2em 0.2em 0;
+}
+
+#tabs.tabs-bottom .ui-tabs-nav li {
+    margin-top: -2px !important;
+    margin-bottom: 1px !important;
+    border-top: none;
+    border-bottom-width: 1px;
+}
+
+#tabs.ui-tabs {
+    padding: 0;
+}
+
+#tabs.ui-tabs-selected {
+    margin-top: -3px !important;
+}
+
+#tabs.ui-tabs .ui-tabs-nav li a {
+    float: left;
+    font-size: 0.7em;
+    font-weight: bold;
+    padding: 5px;
+    text-decoration: none;
+}
+
+/* Send Mail Page */
+/* .wwgrp div > label:first-child {
+    float: left;
+}
+
+.wwgrp div > input[type="text"]:first-child {
+    float: right;
+}
+
+.wwgrp br {
+    line-height: 0px;
+}
+
+form#sendMail>div {
+    position: relative;
+    top: 10px;
+} */

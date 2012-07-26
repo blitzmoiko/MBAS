@@ -1,1 +1,1 @@
-<div align="center">The Footer Part</div>
+<p>Copyright © 2012 City Properties Real Estate, LLC<p>

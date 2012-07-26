@@ -3,30 +3,76 @@
 "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
 "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
 <tiles-definitions>
-	<definition name="baseLayout" template="/layouts/baseLayout.jsp">
-		<put-attribute name="title" value="Template" />
-		<put-attribute name="header" value="/templates/header.jsp" />
-		<put-attribute name="menu" value="/templates/menu.jsp" />
-		<put-attribute name="body" value="/templates/body.jsp" />
-		<put-attribute name="footer" value="/templates/footer.jsp" />
-	</definition>
+    <definition name="baseLayout" template="/Application/layout/base_layout.jsp">
+        <put-attribute name="title" value="Template" />
+        <put-attribute name="header" value="/Application/template/header.jsp" />
+        <put-attribute name="menu" value="/Application/template/menu.jsp" />
+        <put-attribute name="body" value="/Application/template/body.jsp" />
+        <put-attribute name="footer" value="/Application/template/footer.jsp" />
+    </definition>
 
-	<definition name="home" extends="baseLayout">
-		<put-attribute name="title" value="Home Page" />
-		<put-attribute name="body" value="/pages/home.jsp" />
-	</definition>
-	<definition name="aboutUs" extends="baseLayout">
-		<put-attribute name="title" value="About Us Page" />
-		<put-attribute name="body" value="/pages/aboutUs.jsp" />
-	</definition>
+    <definition name="popupLayout" template="/Application/layout/popup_layout.jsp">
+        <put-attribute name="title" value="Template" />
+        <put-attribute name="body" value="/Application/template/body.jsp" />
+    </definition>
 
-	<definition name="contactUs" extends="baseLayout">
-		<put-attribute name="title" value="Contact Us Page" />
-		<put-attribute name="body" value="/pages/contactUs.jsp" />
-	</definition>
+    <definition name="/login" template="/Application/layout/terminal_layout.jsp">
+        <put-attribute name="title" value="Login Page" />
+        <put-attribute name="body" value="/Application/content/login.jsp" />
+        <put-attribute name="footer" value="/Application/template/footer.jsp" />
+    </definition>
 
-	<definition name="registration" extends="baseLayout">
-		<put-attribute name="title" value="Register Here" />
-		<put-attribute name="body" value="/pages/registration.jsp" />
-	</definition>
+    <definition name="/home" extends="baseLayout">
+        <put-attribute name="title" value="Home Page" />
+    </definition>
+
+    <definition name="/changePassword" extends="baseLayout">
+        <put-attribute name="title" value="Change Password Page" />
+        <put-attribute name="body" value="/Application/content/change_password.jsp" />
+    </definition>
+
+    <definition name="/client" extends="baseLayout">
+        <put-attribute name="title" value="Client Page" />
+        <put-attribute name="body" value="/Application/content/manage_client.jsp" />
+    </definition>
+
+    <definition name="/viewClient" extends="popupLayout">
+        <put-attribute name="title" value="Client Page" />
+        <put-attribute name="body" value="/Application/content/view_client.jsp" />
+    </definition>
+
+    <definition name="/viewClientPrivilege" extends="popupLayout">
+        <put-attribute name="title" value="Client Privilege Page" />
+        <put-attribute name="body" value="/Application/content/view_client_privilege.jsp" />
+    </definition>
+
+    <definition name="/businessAssociate" extends="baseLayout">
+        <put-attribute name="title" value="Business Associate Page" />
+        <put-attribute name="body" value="/Application/content/manage_ba.jsp" />
+    </definition>
+
+    <definition name="/mailType" extends="baseLayout">
+        <put-attribute name="title" value="Mail Type Page" />
+        <put-attribute name="body" value="/Application/content/manage_mail_type.jsp" />
+    </definition>
+
+    <definition name="/letterContent" extends="popupLayout">
+        <put-attribute name="title" value="Letter Content Page" />
+        <put-attribute name="body" value="/Application/content/manage_letter_content.jsp" />
+    </definition>
+
+    <definition name="/letterTemplate" extends="popupLayout">
+        <put-attribute name="title" value="Lettter Template Page" />
+        <put-attribute name="body" value="/Application/content/manage_letter_template.jsp" />
+    </definition>
+
+    <definition name="/sendMail" extends="baseLayout">
+        <put-attribute name="title" value="Send Mail Page" />
+        <put-attribute name="body" value="/Application/content/send_mail.jsp" />
+    </definition>
+
+    <definition name="/close" extends="baseLayout">
+        <put-attribute name="body" value="/Application/content/close.jsp" />
+    </definition>
+
 </tiles-definitions>

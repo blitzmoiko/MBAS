@@ -8,63 +8,41 @@ import org.hibernate.criterion.Restrictions;
 import com.cityproperties.domain.Client;
 import com.cityproperties.util.encrypt.EncryptPassword;
 
-public class ClientDAO_Impl 
-		extends GenericDAOImpl<Client, Serializable>
-		implements ClientDAO {
+public class ClientDAO_Impl
+        extends GenericDAOImpl<Client, Serializable>
+        implements ClientDAO {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see 
-	 * 	com.cityproperties.dao.ClientDAO#findByUsername(java.lang.String)
-	 */
-	public Client findByUsername(String username) {
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * 	com.cityproperties.dao.ClientDAO#findByUsername(java.lang.String)
+     */
+    public Client findByUsername(String username) {
 
-		Criteria crit = getSession().createCriteria(Client.class);
-		crit.add(Restrictions.eq("username", username));
+        Criteria crit = getSession().createCriteria(Client.class);
+        crit.add(Restrictions.eq("username", username));
 
-		return (Client) crit.uniqueResult();
+        return (Client) crit.uniqueResult();
 
-	}
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * 	com.cityproperties.dao.ClientDAO#loadByUsernameAndPassword(java.lang.String, java.lang.String)
-	 */
-	public Client loadByUsernameAndPassword(String username, String password) {
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * 	com.cityproperties.dao.ClientDAO#findOldPasswordIfExists(com.cityproperties.domain.Client, java.lang.String)
+     */
+    public boolean findOldPasswordIfExists(Client client, String oldPassword) {
 
-		Client client = findByUsername(username);
-		
-		if (client != null) {
-			
-			if (EncryptPassword.checkPassword(password, client.getPassword())) {
-				return client;
-			}
-			
-		}
-		
-		return null;
-		
-	}
+        if (EncryptPassword.checkPassword(oldPassword, client.getPassword())) {
+            return true;
+        }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * 	com.cityproperties.dao.ClientDAO#findOldPasswordIfExists(com.cityproperties.domain.Client, java.lang.String)
-	 */
-	public boolean findOldPasswordIfExists(Client client, String oldPassword) {
+        else {
+            return false;
+        }
 
-		if (EncryptPassword.checkPassword(oldPassword, client.getPassword())) {
-			return true;
-		}
+    }
 
-		else {
-			return false;
-		}
-
-	}
-	
 }

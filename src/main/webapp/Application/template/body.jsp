@@ -1,1 +1,1 @@
-<p>Default Body Contents</p>
+<p></p>
