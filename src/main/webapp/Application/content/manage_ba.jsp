@@ -55,7 +55,6 @@
 
             <s:checkbox key="label.supplier" name="supplier" value="%{#session.modelBusinessAssociate.supplier}" />
             <s:submit key="label.submit" name="submit" />
-            <s:submit action="main" key="label.close" name="close" onclick="form.onsubmit=null" />
         </s:form>
     </div>
 

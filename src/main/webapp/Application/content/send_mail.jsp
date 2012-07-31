@@ -10,8 +10,8 @@
         <br>
         <s:actionerror />
         <s:form action="validateMail" theme="xhtml">
-        <%--<s:textfield name="from" key="label.from" value=%{#client.username}/> --%>
-            <s:textfield name="from" key="label.from" value="%{#session.client.username}" disabled="true" />
+            <s:textfield name="from" key="label.from" value="neil.juan@propertiesre.com"/>
+            <%-- <s:textfield name="from" key="label.from" value="%{#session.client.username}" disabled="true" /> --%>
             <s:textfield id="toId" name="to" key="label.to" value="melvin.s@propertiesre.com" />
             <s:submit  key="label.add_recipients" onclick=" " />
             <s:textfield name="subject" key="label.subject" value="TEST" />
@@ -37,7 +37,6 @@
             <s:hidden id="templateNameId" name="templateName" />
             <s:submit key="label.apply_mail_type" onclick=" " />
             <s:submit key="label.send" name="send" />
-            <s:submit action="main" key="label.close" name="close" onclick="form.onsubmit=null" />
         </s:form>
     </div>
 </div>

@@ -6,7 +6,7 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 
 import com.cityproperties.domain.Client;
-import com.cityproperties.util.encrypt.EncryptPassword;
+import com.cityproperties.util.encrypt.Encrypter;
 
 public class ClientDAO_Impl
         extends GenericDAOImpl<Client, Serializable>
@@ -35,7 +35,7 @@ public class ClientDAO_Impl
      */
     public boolean findOldPasswordIfExists(Client client, String oldPassword) {
 
-        if (EncryptPassword.checkPassword(oldPassword, client.getPassword())) {
+        if (Encrypter.checkPassword(oldPassword, client.getPassword())) {
             return true;
         }
 

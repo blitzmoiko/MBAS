@@ -2,7 +2,6 @@
 <%@ taglib prefix="sj" uri="/struts-jquery-tags"%>
 <%@ taglib prefix="sjg" uri="/struts-jquery-grid-tags"%>
 
-
 <script type="text/javascript" src="/MailToBusinessAssociates/js/jquery-ui-1.8.13.custom.min.js"></script>
 <script type="text/javascript">
     function childOpen(childAction) {
@@ -43,6 +42,7 @@
 
         oTable2 = $('#letterTemplateTable').dataTable({
             "bJQueryUI": true,
+            "sScrollY": "300px",
             "sPaginationType": "full_numbers",
             "aaSorting": [[ 0, "asc" ]]
         });
@@ -73,6 +73,10 @@
         alert(aReturn);
         return aReturn;
     }
+
+    function popUpClosed() {
+        window.location.reload();
+    }
 </script>
 
 <div id="cont">
@@ -84,7 +88,6 @@
             <sj:textfield name="letterContentName" key="label.template_name" value="%{#session.modelMailType.letterContent.name}" />
             <sj:textfield name="letterTemplateName" key="label.image_name" value="%{#session.modelMailType.letterTemplate.name}" />
             <s:submit key="label.submit" name="submit" />
-            <s:submit action="main" key="label.close" name="close" onclick="form.onsubmit=null" />
         </s:form>
     </div>
     <s:if test="mailTypes.size() > 0">
@@ -133,7 +136,7 @@
        <li><a href="#tab-2">Image Template</a></li>
     </ul>
     <div id="tab-1">
-        <a class="button" href="javascript:void(0);" onclick='childOpen("<s:url action="letterContent" />");'>Add a new text template</a>
+        <a class="button" id="add-button" href="javascript:void(0);" onclick='childOpen("<s:url action="letterContent" />");'>Add a new text template</a>
         <br>
         <br>
         <s:if test="letterContents.size() > 0">

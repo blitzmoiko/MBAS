@@ -17,72 +17,72 @@ import com.cityproperties.domain.LetterTemplate;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class LoadImageAction
-		extends ActionSupport
-		implements SessionAware {
+        extends ActionSupport
+        implements SessionAware {
 
-	// Fields
-	private Long letterTemplateId;
+    // Fields
+    private Long letterTemplateId;
 
-	// Session
-	private Map<String, Object> session;
-	private LetterTemplate letterTemplate;
-	private List<LetterTemplate> letterTemplates;
+    // Session
+    private Map<String, Object> session;
+    private LetterTemplate letterTemplate;
+    private List<LetterTemplate> letterTemplates;
 
-	// DI via Spring
-	private LetterTemplateDAO letterTemplateDao;
+    // DI via Spring
+    @Autowired
+    private LetterTemplateDAO letterTemplateDao;
 
-	public String execute() {
-		HttpServletRequest request = null;
-		HttpServletResponse response = null;
-		ServletOutputStream out = null;
+    public void setLetterTemplateDao(LetterTemplateDAO letterTemplateDao) {
+        this.letterTemplateDao = letterTemplateDao;
+    }
 
-		try {
-			request = ServletActionContext.getRequest();
-			response = ServletActionContext.getResponse();
-			letterTemplate = letterTemplateDao.find(Long.parseLong(request.getParameter("id")));
-			response.setContentType(letterTemplate.getContentType());
-			out = response.getOutputStream();
-			out.write(letterTemplate.getThumbnail());
-			out.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (out != null)
-				try {
-					out.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-		}
+    public String execute() {
+        HttpServletRequest request = null;
+        HttpServletResponse response = null;
+        ServletOutputStream out = null;
 
-		return NONE;
-	}
+        try {
+            request = ServletActionContext.getRequest();
+            response = ServletActionContext.getResponse();
+            letterTemplate = letterTemplateDao.find(Long.parseLong(request.getParameter("id")));
+            response.setContentType(letterTemplate.getContentType());
+            out = response.getOutputStream();
+            out.write(letterTemplate.getThumbnail());
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (out != null)
+                try {
+                    out.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+        }
 
-	public LetterTemplate getLetterTemplate() {
-		return letterTemplate;
-	}
+        return NONE;
+    }
 
-	public void setLetterTemplate(LetterTemplate letterTemplate) {
-		this.letterTemplate = letterTemplate;
-	}
+    public LetterTemplate getLetterTemplate() {
+        return letterTemplate;
+    }
 
-	public List<LetterTemplate> getLetterTemplates() {
-		return letterTemplates;
-	}
+    public void setLetterTemplate(LetterTemplate letterTemplate) {
+        this.letterTemplate = letterTemplate;
+    }
 
-	public void setLetterTemplates(List<LetterTemplate> letterTemplates) {
-		this.letterTemplates = letterTemplates;
-	}
+    public List<LetterTemplate> getLetterTemplates() {
+        return letterTemplates;
+    }
 
-	@Autowired
-	public void setLetterTemplateDao(LetterTemplateDAO letterTemplateDao) {
-		this.letterTemplateDao = letterTemplateDao;
-	}
+    public void setLetterTemplates(List<LetterTemplate> letterTemplates) {
+        this.letterTemplates = letterTemplates;
+    }
 
-	public void setSession(Map<String, Object> session) {
-		this.session = session;
-	}
+    public void setSession(Map<String, Object> session) {
+        this.session = session;
+    }
 
 }

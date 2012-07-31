@@ -4,21 +4,8 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-        <property name="host" value="10.20.30.40" />
-        <property name="port" value="25" />
-        <property name="username" value="neil.juan@propertiesre.com" />
-        <property name="password" value="nj1616" />
-
-        <property name="javaMailProperties">
-            <props>
-                <prop key="mail.from">neil.juan@propertiesre.com</prop>
-                <prop key="mail.smtp.auth">true</prop>
-                <prop key="mail.smtp.starttls.enable">true</prop>
-                <!-- <prop key="mail.debug">true</prop>
-                <prop key="javax.net.debug">all</prop> -->
-            </props>
-        </property>
+    <bean name="databaseTemplateLoader"
+        class="com.cityproperties.util.mail.template.EmailDatabaseTemplateLoader">
     </bean>
 
     <bean id="fmConfig"
@@ -26,14 +13,29 @@
         <property name="preTemplateLoaders" ref="databaseTemplateLoader" />
     </bean>
 
-    <bean name="databaseTemplateLoader"
-        class="com.cityproperties.util.email.template.EmailDatabaseTemplateLoader">
-        <property name="mailTypeDao" ref="mailTypeDao" />
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <!-- CityProperties Mail Server -->
+        <property name="host" value="10.20.30.40" />
+        <property name="port" value="25" />
+
+        <!-- Put Admin Username -->
+        <property name="username" value="neil.juan@propertiesre.com" />
+
+        <!-- Put Admin Password -->
+        <property name="password" value="nj1616" />
+
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.starttls.enable">true</prop>
+                <!-- <prop key="mail.debug">true</prop> -->
+                <!-- <prop key="javax.net.debug">all</prop> -->
+            </props>
+        </property>
     </bean>
 
-    <bean id="sendMail" class="com.cityproperties.util.email.SendMail">
+    <bean id="sendMail" class="com.cityproperties.util.mail.SendMail">
         <property name="mailSender" ref="mailSender" />
-        <property name="fmConfig" ref="fmConfig" />
     </bean>
 
 </beans>

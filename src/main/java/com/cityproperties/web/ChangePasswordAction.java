@@ -8,110 +8,110 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.cityproperties.dao.ClientDAO;
 import com.cityproperties.domain.Client;
 import com.cityproperties.util.Constants;
-import com.cityproperties.util.encrypt.EncryptPassword;
+import com.cityproperties.util.encrypt.Encrypter;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
 
-public class ChangePasswordAction 
-		extends ActionSupport 
-		implements SessionAware {
+public class ChangePasswordAction
+        extends ActionSupport
+        implements SessionAware {
 
-	// Fields
-	private String oldPassword;
-	private String newPassword;
-	private String reNewPassword;
+    // Fields
+    private String oldPassword;
+    private String newPassword;
+    private String reNewPassword;
 
-	// Session
-	private Map<String, Object> session;
-	private Client client;
+    // Session
+    private Map<String, Object> session;
+    private Client client;
 
-	// DI via Spring
-	private ClientDAO clientDao;
+    // DI via Spring
+    @Autowired
+    private ClientDAO clientDao;
 
-	public String execute() {
+    public void setClientDao(ClientDAO clientDao) {
+        this.clientDao = clientDao;
+    }
 
-		/* TODO After validating the old password and the new password, it will
-		 be able to confirm that it had successfully changed the password on the result page*/
-		
-		if (session.containsKey(Constants.CLIENT)) {
-			client = (Client) session.get(Constants.CLIENT);
-		}
-		
-		else {
-			return INPUT;
-		}
+    public String execute() {
 
-		if (!clientDao.findOldPasswordIfExists(client, oldPassword)) {
-			addFieldError("oldPassword", getText("error.nonExistingPassword"));
-		}
+        /* TODO After validating the old password and the new password, it will
+         be able to confirm that it had successfully changed the password on the result page*/
 
-		else {
-			if (oldPassword.equals(newPassword)) {
-				addFieldError("newPassword", getText("error.samePassword"));
-			}
+        if (session.containsKey(Constants.CLIENT)) {
+            client = (Client) session.get(Constants.CLIENT);
+        }
 
-			else if (!newPassword.equals(reNewPassword)) {
-				addFieldError("reNewPassword", getText("error.unmatchedPassword"));
-			}
+        else {
+            return INPUT;
+        }
 
-			else {
-				String encrypted = EncryptPassword.encrypt(newPassword);
-				client.setPassword(encrypted);
-				clientDao.save(client);
+        if (!clientDao.findOldPasswordIfExists(client, oldPassword)) {
+            addFieldError("oldPassword", getText("error.nonExistingPassword"));
+        }
 
-				session.put(Constants.CLIENT, client);
-				
-				return SUCCESS;
-			}
-		}
-		
-		return INPUT;
-	}
-	
-	@RequiredStringValidator(message="Retype new password.")
-	public String getReNewPassword() {
-		return reNewPassword;
-	}
+        else {
+            if (oldPassword.equals(newPassword)) {
+                addFieldError("newPassword", getText("error.samePassword"));
+            }
 
-	public void setReNewPassword(String reNewPassword) {
-		this.reNewPassword = reNewPassword;
-	}
+            else if (!newPassword.equals(reNewPassword)) {
+                addFieldError("reNewPassword", getText("error.unmatchedPassword"));
+            }
 
-	@RequiredStringValidator(message="Type old password.")
-	public String getOldPassword() {
-		return oldPassword;
-	}
+            else {
+                String encrypted = Encrypter.encrypt(newPassword);
+                client.setPassword(encrypted);
+                clientDao.save(client);
 
-	public void setOldPassword(String oldPassword) {
-		this.oldPassword = oldPassword;
-	}
+                session.put(Constants.CLIENT, client);
 
-	@RequiredStringValidator(message="Type new password.")	
-	@StringLengthFieldValidator(minLength="5", maxLength="10", message="Password must be from 5 to 10 characters.") 
-	public String getNewPassword() {
-		return newPassword;
-	}
+                return SUCCESS;
+            }
+        }
 
-	public void setNewPassword(String newPassword) {
-		this.newPassword = newPassword;
-	}
+        return INPUT;
+    }
 
-	public Client getClient() {
-		return client;
-	}
+    @RequiredStringValidator(message="Retype new password.")
+    public String getReNewPassword() {
+        return reNewPassword;
+    }
 
-	public void setClient(Client client) {
-		this.client = client;
-	}
+    public void setReNewPassword(String reNewPassword) {
+        this.reNewPassword = reNewPassword;
+    }
 
-	@Autowired
-	public void setClientDao(ClientDAO clientDao) {
-		this.clientDao = clientDao;
-	}
+    @RequiredStringValidator(message="Type old password.")
+    public String getOldPassword() {
+        return oldPassword;
+    }
 
-	public void setSession(Map<String, Object> session) {
-		this.session = session;
-	}
+    public void setOldPassword(String oldPassword) {
+        this.oldPassword = oldPassword;
+    }
+
+    @RequiredStringValidator(message="Type new password.")
+    @StringLengthFieldValidator(minLength="5", maxLength="10", message="Password must be from 5 to 10 characters.")
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public void setSession(Map<String, Object> session) {
+        this.session = session;
+    }
 
 }

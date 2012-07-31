@@ -1,4 +1,4 @@
-package com.cityproperties.util.email;
+package com.cityproperties.util.mail;
 
 
 public class SendException 

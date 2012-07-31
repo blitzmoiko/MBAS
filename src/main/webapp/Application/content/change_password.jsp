@@ -11,7 +11,6 @@
             <s:password name="newPassword" key="label.new_password" size="20" />
             <s:password name="reNewPassword" key="label.re_new_password" size="20" />
             <s:submit key="label.save" name="save" />
-            <s:submit action="main" key="label.cancel" name="cancel" onclick="form.onsubmit=null"/>
         </s:form>
     </div>
 </div>

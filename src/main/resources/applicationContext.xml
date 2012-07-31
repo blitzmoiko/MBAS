@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
     xmlns:util="http://www.springframework.org/schema/util"
@@ -7,8 +8,13 @@
 
     <!-- Database Configuration -->
     <import resource="config/spring/DataSource.xml" />
-    <import resource="config/spring/Mail.xml" />
     <import resource="config/spring/HibernateSessionFactory.xml" />
+
+    <!-- Mail Configuration -->
+    <import resource="config/spring/Mail.xml" />
+
+    <!-- Scheduled Task Configuration -->
+    <import resource="config/spring/Task.xml" />
 
     <!-- Beans Declaration -->
     <import resource="com/cityproperties/domain/spring/BusinessAssociateBean.xml" />

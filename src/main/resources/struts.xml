@@ -128,12 +128,12 @@
 
     <action name="editMailType" method="edit"
         class="com.cityproperties.web.MailTypeAction">
-        <result type="tiles">/mailType</result>
+        <result type="redirect">tableMailType.action</result>
     </action>
 
     <action name="deleteMailType" method="delete"
         class="com.cityproperties.web.MailTypeAction">
-        <result type="redirect">listMailType.action</result>
+        <result type="redirect">tableMailType.action</result>
     </action>
 
     <!-- Mail Type Tables -->
@@ -155,7 +155,7 @@
 
     <action name="saveOrUpdateLetterContent" method="saveOrUpdate"
         class="com.cityproperties.web.LetterContentAction">
-        <result type="tiles">/close</result>
+        <result type="tiles">/letterContent</result>
     </action>
 
     <action name="editLetterContent" method="edit"

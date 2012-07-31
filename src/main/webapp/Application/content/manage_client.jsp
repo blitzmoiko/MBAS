@@ -41,19 +41,18 @@
             </s:else>
 
             <sec:authorize access="hasRole('ROLE_ADMIN')">
-                <s:checkbox name="active" key="label.active" value="%{#session.modelClient.active}" />
                 <div id="privilege">
                     <s:checkbox id="viewId" name="view" key="label.view" value="%{#session.modelClient.clientPrivilege.view}" />
                     <s:checkbox id="insertId" name="insert" key="label.insert" value="%{#session.modelClient.clientPrivilege.insert}" />
                     <s:checkbox id="updateId" name="update" key="label.update" value="%{#session.modelClient.clientPrivilege.update}" />
                     <s:checkbox id="deleteId" name="delete" key="label.delete" value="%{#session.modelClient.clientPrivilege.delete}" />
-                    <!-- <s:submit type="button" key="label.copy_privileges" onClick="childOpen('listClientPrivilege.action')" /> -->
+                    <s:submit id="copy_privileges" type="input" key="label.copy_privileges" onClick="childOpen('listClientPrivilege.action');" />
                     <input type="button" value="Copy Privileges" onClick="childOpen('listClientPrivilege.action')" />
                 </div>
+                <s:checkbox name="active" key="label.active" value="%{#session.modelClient.active}" />
             </sec:authorize>
 
             <s:submit key="label.submit" name="submit" />
-            <s:submit action="main" key="label.close" name="close" onclick="form.onsubmit=null" />
         </s:form>
     </div>
 

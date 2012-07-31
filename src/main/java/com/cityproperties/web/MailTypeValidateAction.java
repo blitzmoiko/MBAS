@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.struts2.interceptor.SessionAware;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cityproperties.dao.MailTypeDAO;
 import com.cityproperties.domain.LetterContent;
@@ -16,116 +17,117 @@ import com.opensymphony.xwork2.Preparable;
 import com.opensymphony.xwork2.validator.annotations.RequiredFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 
-public class MailTypeValidateAction 
-		extends ActionSupport 
-		implements SessionAware, Preparable {
-	
-	// Fields
-	private Long mailTypeId;
-	private String name;
-	private LetterContent letterContent;
-	private LetterTemplate letterTemplate;
-	private Date revisionDate;
-	
-	// Session
-	private Map<String, Object> session;
-	private MailType mailType;
-	private List<MailType> mailTypes;
-	
-	//DI via Spring
-	private MailTypeDAO mailTypeDao;
-	
-	@SuppressWarnings("unchecked")
-	public void prepare() throws Exception {
-		if (session.containsKey(Constants.MODEL_MAIL_TYPE) ) {
-			mailType = (MailType) session.get(Constants.MODEL_MAIL_TYPE);
-			setMailTypeId(mailType.getMailTypeId());
-			setName(mailType.getName());
-			setLetterContent(mailType.getLetterContent());
-			setLetterTemplate(mailType.getLetterTemplate());
-		}
-		
-		if (session.containsKey(Constants.MAIL_TYPES)) {
-			mailTypes = (List<MailType>) session.get(Constants.MAIL_TYPES);		
-		}  
-	}
+public class MailTypeValidateAction
+        extends ActionSupport
+        implements SessionAware, Preparable {
 
-	public String execute() {
-		mailType = new MailType();
-		mailType.setName(name);
-		mailType.setLetterContent(letterContent);
-		mailType.setLetterTemplate(letterTemplate);
-		mailType.setRevisionDate(new Date());
-		
-		session.put(Constants.MODEL_MAIL_TYPE, mailType);
-		
-		return SUCCESS;
-	}
+    // Fields
+    private Long mailTypeId;
+    private String name;
+    private LetterContent letterContent;
+    private LetterTemplate letterTemplate;
+    private Date revisionDate;
 
-	public Long getMailTypeId() {
-		return mailTypeId;
-	}
+    // Session
+    private Map<String, Object> session;
+    private MailType mailType;
+    private List<MailType> mailTypes;
 
-	public void setMailTypeId(Long mailTypeId) {
-		this.mailTypeId = mailTypeId;
-	}
+    //DI via Spring
+    @Autowired
+    private MailTypeDAO mailTypeDao;
 
-	@RequiredStringValidator(message="Template name is required.")
-	public String getName() {
-		return name;
-	}
+    public void setMailTypeDao(MailTypeDAO mailTypeDao) {
+        this.mailTypeDao = mailTypeDao;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    @SuppressWarnings("unchecked")
+    public void prepare() throws Exception {
+        if (session.containsKey(Constants.MODEL_MAIL_TYPE) ) {
+            mailType = (MailType) session.get(Constants.MODEL_MAIL_TYPE);
+            setMailTypeId(mailType.getMailTypeId());
+            setName(mailType.getName());
+            setLetterContent(mailType.getLetterContent());
+            setLetterTemplate(mailType.getLetterTemplate());
+        }
 
-	@RequiredFieldValidator(message="Letter Content is required.")
-	public LetterContent getLetterContent() {
-		return letterContent;
-	}
+        if (session.containsKey(Constants.MAIL_TYPES)) {
+            mailTypes = (List<MailType>) session.get(Constants.MAIL_TYPES);
+        }
+    }
 
-	public void setLetterContent(LetterContent letterContent) {
-		this.letterContent = letterContent;
-	}
+    public String execute() {
+        mailType = new MailType();
+        mailType.setName(name);
+        mailType.setLetterContent(letterContent);
+        mailType.setLetterTemplate(letterTemplate);
+        mailType.setRevisionDate(new Date());
 
-	public LetterTemplate getLetterTemplate() {
-		return letterTemplate;
-	}
+        session.put(Constants.MODEL_MAIL_TYPE, mailType);
 
-	public void setLetterTemplate(LetterTemplate letterTemplate) {
-		this.letterTemplate = letterTemplate;
-	}
+        return SUCCESS;
+    }
 
-	public Date getRevisionDate() {
-		return revisionDate;
-	}
+    public Long getMailTypeId() {
+        return mailTypeId;
+    }
 
-	public void setRevisionDate(Date revisionDate) {
-		this.revisionDate = revisionDate;
-	}
+    public void setMailTypeId(Long mailTypeId) {
+        this.mailTypeId = mailTypeId;
+    }
 
-	public MailType getMailType() {
-		return mailType;
-	}
+    @RequiredStringValidator(message="Template name is required.")
+    public String getName() {
+        return name;
+    }
 
-	public void setMailType(MailType mailType) {
-		this.mailType = mailType;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public List<MailType> getMailTypes() {
-		return mailTypes;
-	}
+    @RequiredFieldValidator(message="Letter Content is required.")
+    public LetterContent getLetterContent() {
+        return letterContent;
+    }
 
-	public void setMailTypes(List<MailType> mailTypes) {
-		this.mailTypes = mailTypes;
-	}
+    public void setLetterContent(LetterContent letterContent) {
+        this.letterContent = letterContent;
+    }
 
-	public void setMailTypeDao(MailTypeDAO mailTypeDao) {
-		this.mailTypeDao = mailTypeDao;
-	}
-	
-	public void setSession(Map<String, Object> session) {
-		this.session = session;
-	}
+    public LetterTemplate getLetterTemplate() {
+        return letterTemplate;
+    }
+
+    public void setLetterTemplate(LetterTemplate letterTemplate) {
+        this.letterTemplate = letterTemplate;
+    }
+
+    public Date getRevisionDate() {
+        return revisionDate;
+    }
+
+    public void setRevisionDate(Date revisionDate) {
+        this.revisionDate = revisionDate;
+    }
+
+    public MailType getMailType() {
+        return mailType;
+    }
+
+    public void setMailType(MailType mailType) {
+        this.mailType = mailType;
+    }
+
+    public List<MailType> getMailTypes() {
+        return mailTypes;
+    }
+
+    public void setMailTypes(List<MailType> mailTypes) {
+        this.mailTypes = mailTypes;
+    }
+
+    public void setSession(Map<String, Object> session) {
+        this.session = session;
+    }
 
 }

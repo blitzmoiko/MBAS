@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.interceptor.SessionAware;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cityproperties.dao.BusinessAssociateDAO;
 import com.cityproperties.domain.BusinessAssociate;
@@ -14,96 +15,97 @@ import com.cityproperties.util.Constants;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
 
-public class BusinessAssociateAction 
-		extends ActionSupport 
-		implements SessionAware, Preparable {
+public class BusinessAssociateAction
+        extends ActionSupport
+        implements SessionAware, Preparable {
 
-	// Session
-	private Map<String, Object> session;
-	private BusinessAssociate businessAssociate;
-	private List<BusinessAssociate> businessAssociates;
+    // Session
+    private Map<String, Object> session;
+    private BusinessAssociate businessAssociate;
+    private List<BusinessAssociate> businessAssociates;
 
-	// DI via Spring
-	private BusinessAssociateDAO businessAssociateDao;
+    // DI via Spring
+    @Autowired
+    private BusinessAssociateDAO businessAssociateDao;
 
-	@SuppressWarnings("unchecked")
-	public void prepare() throws Exception {
-		if (session.containsKey(Constants.MODEL_BA)) {
-			businessAssociate = (BusinessAssociate) session.get(Constants.MODEL_BA);		
-		}
-		
-		if (session.containsKey(Constants.BAS)) {
-			businessAssociates = (List<BusinessAssociate>) session.get(Constants.BAS);		
-		} 
-	}
+    public void setBusinessAssociateDao(BusinessAssociateDAO businessAssociateDao) {
+        this.businessAssociateDao = businessAssociateDao;
+    }
 
-	public String execute() {
-		return SUCCESS;
-	}
+    @SuppressWarnings("unchecked")
+    public void prepare() throws Exception {
+        if (session.containsKey(Constants.MODEL_BA)) {
+            businessAssociate = (BusinessAssociate) session.get(Constants.MODEL_BA);
+        }
 
-	/**
-	 * To save or update business associate.
-	 * @return String
-	 */
-	public String saveOrUpdate() {
-		businessAssociateDao.save(businessAssociate);
-		session.remove(Constants.MODEL_BA);
-		return SUCCESS;
-	}
+        if (session.containsKey(Constants.BAS)) {
+            businessAssociates = (List<BusinessAssociate>) session.get(Constants.BAS);
+        }
+    }
 
-	/**
-	 * To list all users.
-	 * @return String
-	 */
-	public String list() {
-		businessAssociates = businessAssociateDao.findAll();
-		session.put(Constants.BAS, businessAssociates);
-		return SUCCESS;
-	}
+    public String execute() {
+        return SUCCESS;
+    }
 
-	/**
-	 * To delete a business associate.
-	 * @return String
-	 */
-	public String delete() {
-		HttpServletRequest request = ServletActionContext.getRequest();
-		businessAssociateDao.removeById(Long.parseLong(request.getParameter("id")));
-		return SUCCESS;
-	}
+    /**
+     * To save or update business associate.
+     * @return String
+     */
+    public String saveOrUpdate() {
+        businessAssociateDao.save(businessAssociate);
+        session.remove(Constants.MODEL_BA);
+        return SUCCESS;
+    }
 
-	/**
-	 * To list a single business associate by Id.
-	 * @return String
-	 */
-	public String edit() {
-		HttpServletRequest request = ServletActionContext.getRequest();
-		businessAssociate = businessAssociateDao.find(Long.parseLong(request.getParameter("id")));
-		session.put(Constants.MODEL_BA, businessAssociate);
-		return SUCCESS;
-	}
+    /**
+     * To list all users.
+     * @return String
+     */
+    public String list() {
+        businessAssociates = businessAssociateDao.findAll();
+        session.put(Constants.BAS, businessAssociates);
+        return SUCCESS;
+    }
 
-	public BusinessAssociate getBusinessAssociate() {
-		return businessAssociate;
-	}
+    /**
+     * To delete a business associate.
+     * @return String
+     */
+    public String delete() {
+        HttpServletRequest request = ServletActionContext.getRequest();
+        businessAssociateDao.removeById(Long.parseLong(request.getParameter("id")));
+        return SUCCESS;
+    }
 
-	public void setBusinessAssociate(BusinessAssociate businessAssociate) {
-		this.businessAssociate = businessAssociate;
-	}
+    /**
+     * To list a single business associate by Id.
+     * @return String
+     */
+    public String edit() {
+        HttpServletRequest request = ServletActionContext.getRequest();
+        businessAssociate = businessAssociateDao.find(Long.parseLong(request.getParameter("id")));
+        session.put(Constants.MODEL_BA, businessAssociate);
+        return SUCCESS;
+    }
 
-	public List<BusinessAssociate> getBusinessAssociates() {
-		return businessAssociates;
-	}
+    public BusinessAssociate getBusinessAssociate() {
+        return businessAssociate;
+    }
 
-	public void setBusinessAssociates(List<BusinessAssociate> businessAssociates) {
-		this.businessAssociates = businessAssociates;
-	}
+    public void setBusinessAssociate(BusinessAssociate businessAssociate) {
+        this.businessAssociate = businessAssociate;
+    }
 
-	public void setBusinessAssociateDao(BusinessAssociateDAO businessAssociateDao) {
-		this.businessAssociateDao = businessAssociateDao;
-	}
-	
-	public void setSession(Map<String, Object> session) {
-		this.session = session;
-	}
+    public List<BusinessAssociate> getBusinessAssociates() {
+        return businessAssociates;
+    }
+
+    public void setBusinessAssociates(List<BusinessAssociate> businessAssociates) {
+        this.businessAssociates = businessAssociates;
+    }
+
+    public void setSession(Map<String, Object> session) {
+        this.session = session;
+    }
 
 }
