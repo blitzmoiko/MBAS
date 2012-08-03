@@ -1,6 +1,7 @@
 package com.cityproperties.web;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,7 @@ import javax.mail.internet.MimeMessage;
 
 import org.apache.struts2.interceptor.SessionAware;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
@@ -44,7 +46,6 @@ public class SendMailAction
 
     // Session
     private Map<String, Object> session;
-    private List<BusinessAssociate> businessAssociates;
     private Client client;
     private MailType mailType;
 
@@ -80,81 +81,85 @@ public class SendMailAction
         // Authenticate current client
         client = (Client) session.get(Constants.CLIENT);
         sendMail.authenticate(client);
-
-        // Prepare list of recipients
-        populateBAFromRecipients(to);
     }
 
     public String execute() {
+        // Prepare list of recipients
+        List<BusinessAssociate> businessAssociates = populateBAFromRecipients(to);
 
-        for (final BusinessAssociate businessAssociate: businessAssociates) {
+        if (!businessAssociates.isEmpty()) {
+            for (final BusinessAssociate businessAssociate: businessAssociates) {
 
-            // Create message preparator
-            MimeMessagePreparator messagePreparator = new MimeMessagePreparator() {
+                // Create message preparator
+                MimeMessagePreparator messagePreparator = new MimeMessagePreparator() {
 
-                public void prepare(MimeMessage mimeMessage) throws Exception {
-                    // Use the true flag to indicate you need a multipart message
-                    MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+                    public void prepare(MimeMessage mimeMessage) throws Exception {
+                        // Use the true flag to indicate you need a multipart message
+                        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
 
-                    // Merge the model into the freemarker template
-                    String result;
-                    Map<String, String> model = null;
+                        // Merge the model into the freemarker template
+                        String result;
+                        Map<String, String> model = null;
 
-                    if (!templateName.isEmpty()) {
-                        try {
-                            // Prepare model
-                            model = new HashMap<String, String>();
-                            model.put("name", businessAssociate.getFirstName() + " " + businessAssociate.getLastName());
-                            model.put("inlineImage", "<img src='cid:inlineImage'>");
+                        if (!templateName.isEmpty()) {
+                            try {
+                                // Add stuff to the model for inserting into the template
+                                model = new HashMap<String, String>();
+                                model.put("name", businessAssociate.getFirstName() + " " + businessAssociate.getLastName());
+                                model.put("inlineImage", "<img src='cid:inlineImage'>");
 
-                            result = FreeMarkerTemplateUtils.processTemplateIntoString(fmConfig.getTemplate(templateName), model);
-                        } catch (IOException e) {
-                            throw new SendException(
-                                    "Unable to read or process freemarker configuration or template", e);
-                        } catch (TemplateException e) {
-                            throw new SendException(
-                                    "Problem initializing freemarker or rendering template '" + templateName + "'", e);
+                                result = FreeMarkerTemplateUtils.processTemplateIntoString(fmConfig.getTemplate(templateName), model);
+                            } catch (IOException e) {
+                                throw new SendException(
+                                        "Unable to read or process freemarker configuration or template", e);
+                            } catch (TemplateException e) {
+                                throw new SendException(
+                                        "Problem initializing freemarker or rendering template '" + templateName + "'", e);
+                            }
+                        } else {
+                            result = message;
                         }
-                    } else {
-                        result = message;
-                    }
 
-                    helper.setFrom(from);
-                    helper.setTo(businessAssociate.getEmail());
-                    helper.setSubject(subject);
+                        helper.setFrom(from);
+                        helper.setTo(businessAssociate.getEmail());
+                        helper.setSubject(subject);
 
-                    // Use the true flag to indicate the text included is HTML
-                    helper.setText(result, true);
+                        // Use the true flag to indicate the text included is HTML
+                        helper.setText(result, true);
 
-                    mailType = mailTypeDao.findByDescription(templateName);
-                    if (mailType != null) {
-                        LetterTemplate template = mailType.getLetterTemplate();
-                        if (template != null) {
-                            // Add an inline image
-                            helper.addInline("inlineImage", template.getTemplate(), template.getContentType());
+                        mailType = mailTypeDao.findByDescription(templateName);
+                        if (mailType != null) {
+                            LetterTemplate template = mailType.getLetterTemplate();
+                            if (template != null) {
+                                // Add an inline image
+                                helper.addInline("inlineImage", new ByteArrayResource(template.getTemplate()), template.getContentType());
+                            }
                         }
                     }
+                };
+
+                try {
+                    sendMail.send(messagePreparator);
+                    addActionMessage("Message was sent.");
+                    return SUCCESS;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return INPUT;
                 }
-            };
-
-            try {
-                sendMail.send(messagePreparator);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return INPUT;
             }
         }
 
-        return SUCCESS;
+        return INPUT;
     }
 
     /**
      * Generate list of Business Associates from To address
      * @param to
      */
-    private void populateBAFromRecipients(String to) {
-        // Populate BA
+    private List<BusinessAssociate> populateBAFromRecipients(String to) {
+
         String[] tos = StringUtils.delimitedListToStringArray(to, ";");
+        List<BusinessAssociate> businessAssociates = new ArrayList<BusinessAssociate>();
 
         for (String recipient : tos) {
             BusinessAssociate ba = businessAssociateDao.findByEmail(recipient);
@@ -165,6 +170,7 @@ public class SendMailAction
 
         }
 
+        return businessAssociates;
     }
 
     public String getFrom() {

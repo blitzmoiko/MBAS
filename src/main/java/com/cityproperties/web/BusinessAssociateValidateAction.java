@@ -35,6 +35,7 @@ public class BusinessAssociateValidateAction
     private String mobilePhone;
     private Date birthDate;
     private Date anniversaryDate;
+    private String regToUser;
     private Long regToUserId;
     private boolean supplier;
 
@@ -207,6 +208,15 @@ public class BusinessAssociateValidateAction
         this.anniversaryDate = anniversaryDate;
     }
 
+    public String getRegToUser() {
+        return regToUser;
+    }
+
+    public void setRegToUser(String regToUser) {
+        this.regToUser = regToUser;
+    }
+
+    @RequiredFieldValidator(message="Business Associate must be registered to a Client.")
     public Long getRegToUserId() {
         return regToUserId;
     }

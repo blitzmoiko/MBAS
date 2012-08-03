@@ -36,9 +36,6 @@ public class ChangePasswordAction
 
     public String execute() {
 
-        /* TODO After validating the old password and the new password, it will
-         be able to confirm that it had successfully changed the password on the result page*/
-
         if (session.containsKey(Constants.CLIENT)) {
             client = (Client) session.get(Constants.CLIENT);
         }
@@ -66,6 +63,8 @@ public class ChangePasswordAction
                 clientDao.save(client);
 
                 session.put(Constants.CLIENT, client);
+
+                addActionMessage("Successfully changed password.");
 
                 return SUCCESS;
             }

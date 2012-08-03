@@ -62,6 +62,14 @@ public class BusinessAssociateAction
      * @return String
      */
     public String list() {
+        if (session.containsKey(Constants.MODEL_BA)) {
+            session.remove(Constants.MODEL_BA);
+        }
+
+        if (session.containsKey(Constants.BAS)) {
+            session.remove(Constants.BAS);
+        }
+
         businessAssociates = businessAssociateDao.findAll();
         session.put(Constants.BAS, businessAssociates);
         return SUCCESS;

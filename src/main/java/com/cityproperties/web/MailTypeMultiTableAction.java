@@ -48,6 +48,18 @@ public class MailTypeMultiTableAction
     }
 
     public String execute() {
+        if (session.containsKey(Constants.MAIL_TYPES)) {
+            session.remove(Constants.MAIL_TYPES);
+        }
+
+        if (session.containsKey(Constants.LETTER_CONTENTS)) {
+            session.remove(Constants.LETTER_CONTENTS);
+        }
+
+        if (session.containsKey(Constants.LETTER_TEMPLATES)) {
+            session.remove(Constants.LETTER_TEMPLATES);
+        }
+
         mailTypes = mailTypeDao.findAll();
         session.put(Constants.MAIL_TYPES, mailTypes);
 

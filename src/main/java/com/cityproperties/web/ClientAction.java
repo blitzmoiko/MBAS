@@ -62,6 +62,14 @@ public class ClientAction
      * @return String
      */
     public String list() {
+        if (session.containsKey(Constants.MODEL_CLIENT)) {
+            session.remove(Constants.MODEL_CLIENT);
+        }
+
+        if (session.containsKey(Constants.CLIENTS)) {
+            session.remove(Constants.CLIENTS);
+        }
+
         clients = clientDao.findAll();
         session.put(Constants.CLIENTS, clients);
         return SUCCESS;

@@ -54,6 +54,7 @@ public class LetterContentAction
     public String saveOrUpdate() {
         letterContentDao.save(letterContent);
         addActionMessage("Letter Template " + letterContent.getName() + " is saved.");
+        session.remove(Constants.MODEL_LETTER_CONTENT);
         return SUCCESS;
     }
 
@@ -62,7 +63,16 @@ public class LetterContentAction
      * @return String
      */
     public String list() {
+        if (session.containsKey(Constants.MODEL_LETTER_CONTENT)) {
+            session.remove(Constants.MODEL_LETTER_CONTENT);
+        }
+
+        if (session.containsKey(Constants.LETTER_CONTENTS)) {
+            session.remove(Constants.LETTER_CONTENTS);
+        }
+
         letterContents = letterContentDao.findAll();
+        session.put(Constants.LETTER_CONTENTS, letterContents);
         return SUCCESS;
     }
 
