@@ -17,9 +17,7 @@ public class Encrypter {
      */
     public static boolean checkPassword(String inputPassword,
             String encryptedPassword) {
-        BasicPasswordEncryptor passwordEncryptor = new BasicPasswordEncryptor();
-        return passwordEncryptor
-                .checkPassword(inputPassword, encryptedPassword);
+        return (inputPassword.contentEquals(decrypt(encryptedPassword)) ? true : false);
     }
 
     /**
