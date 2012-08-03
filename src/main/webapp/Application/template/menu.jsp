@@ -32,13 +32,22 @@
                 <!-- Manage mail type -->
                 <a href='<s:url action="tableMailType" />'>Mail Type</a>
             </li>
+            <li>
+                <!-- Manage mail type -->
+                <a href='<s:url action="listLetterContent" />'>Letter Template</a>
+            </li>
+            <li>
+                <!-- Manage mail type -->
+                <a href='<s:url action="listLetterTemplate" />'>Stylesheet Template</a>
+            </li>
         </ul>
     </li>
 
     <li><a href="#">Records</a>
         <ul>
             <li>
-                <!-- Record: print record, create log file --> <%-- <s:a href="Application/content/send_mail.jsp">Send Mail</s:a> --%>
+                <!-- Record: print record, create log file -->
+                <a href='<s:url action="tableMailType" />'>Logs</a>
             </li>
         </ul>
     </li>
