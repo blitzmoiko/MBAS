@@ -51,6 +51,10 @@
             "bJQueryUI": true,
             "sPaginationType": "full_numbers"
         });
+
+        $('#delete-button').click(function() {
+            return confirm("Are You sure?");
+        });
     });
 
     $(function() {
@@ -133,12 +137,9 @@
 <div id="tabs" class="tabs-bottom">
     <ul>
        <li><a href="#tab-1">Letter Template</a></li>
-       <li><a href="#tab-2">Image Template</a></li>
+       <li><a href="#tab-2">Stylesheet Template</a></li>
     </ul>
     <div id="tab-1">
-        <a class="button" id="add-button" href="javascript:void(0);" onclick='childOpen("<s:url action="letterContent" />");'>Add a new text template</a>
-        <br>
-        <br>
         <s:if test="letterContents.size() > 0">
             <table id="letterContentTable" class="display">
                 <thead>
@@ -160,9 +161,6 @@
     </div>
 
     <div id="tab-2">
-        <a class="button" href="javascript:void(0);" onclick='childOpen("<s:url action="letterTemplate" />");'>Add a new stylesheet image</a>
-        <br>
-        <br>
         <s:if test="letterTemplates.size() > 0">
             <table id="letterTemplateTable" class="display">
                 <thead>

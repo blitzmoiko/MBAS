@@ -20,7 +20,7 @@
 </script>
 
 <s:if test="clientPrivileges.size() > 0">
-    <h2>Client Privileges</h2>
+    <h4>Client Privileges</h4>
     <br>
     <div class="content">
         <table id="clientPrivilegeTable" class="display">

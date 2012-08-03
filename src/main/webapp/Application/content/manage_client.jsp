@@ -17,6 +17,12 @@
             "bJQueryUI": true,
             "sPaginationType": "full_numbers"
         });
+
+        $('#copy_privileges').get(0).type = 'button';
+
+        $('#delete-button').click(function() {
+            return confirm("Are You sure?");
+        });
     });
 </script>
 
@@ -33,8 +39,7 @@
 
             <!-- Test password exists for client  -->
             <s:if test="client.clientId != null">
-                <s:password name="password" key="label.password" required="true" value="••••••••" showPassword="true" disabled="true" />
-                <!--<input type="button" value="Change Password" onclick="javascript:childOpen('content/change_password.jsp')" /> -->
+                <s:password name="password" key="label.password" required="true" value="%{#session.modelClient.password}" showPassword="true" disabled="true" />
             </s:if>
             <s:else>
                 <s:password name="password" key="label.password" required="true" />
@@ -46,8 +51,7 @@
                     <s:checkbox id="insertId" name="insert" key="label.insert" value="%{#session.modelClient.clientPrivilege.insert}" />
                     <s:checkbox id="updateId" name="update" key="label.update" value="%{#session.modelClient.clientPrivilege.update}" />
                     <s:checkbox id="deleteId" name="delete" key="label.delete" value="%{#session.modelClient.clientPrivilege.delete}" />
-                    <s:submit id="copy_privileges" type="input" key="label.copy_privileges" onClick="childOpen('listClientPrivilege.action');" />
-                    <input type="button" value="Copy Privileges" onClick="childOpen('listClientPrivilege.action')" />
+                    <s:submit id="copy_privileges" type="button" key="label.copy_privileges" onClick="childOpen('listClientPrivilege.action');" />
                 </div>
                 <s:checkbox name="active" key="label.active" value="%{#session.modelClient.active}" />
             </sec:authorize>
